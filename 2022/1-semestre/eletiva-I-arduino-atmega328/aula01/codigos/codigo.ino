@@ -5,7 +5,7 @@ void setup()
   
   //pinMode(13, INPUT); --> DETERMINANDO COMO ENTRADA
 }
-
+LED ACENDA
 void loop() 
 {
   
