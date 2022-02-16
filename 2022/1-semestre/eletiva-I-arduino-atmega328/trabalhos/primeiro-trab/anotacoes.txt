@@ -1,0 +1,48 @@
+terminal, display, teclado
+
+1) via terminal burro solicitar hora minuto e segundo
+"entre com as horas: xx" (parseint) -> transforma em inteiro
+"entre com os minutos: xx" (parseint)
+
+
+HH:MM
+(pausa 1 seg)
+atualiza
+HH:MM
+pausa 1 seg
+atualiza 
+HH:MM
+
+
+LCD
+
+1) primeira linha : mensagem "HORA ATUAL"
+2) segunda linha: HH:MM
+
+além de mostrar no terminal burro hora e minuto
+tbm mostra no lcd
+
+
+TECLADO
+HH:MM no terminal
+HH:MM LCD
+atualiza
+pausa
+
+teclado para pressionar teclas que façam com que a hora do relógio
+atualize
+
+4 teclas
+se pressionar a 1, incrementa hora
+se pressionar a 2, decrementa hora
+se pressionar a 3, incrementa minuto
+se pressionar a 4, decrementa minuto
+
+consistencia
+se a hora ta em 23 e incrementar, pula pra 0
+se a hora estiver 00 e decrementar, volta pra 23
+
+msm para minutos
+se tiver em 59, volta pra 0
+
+opcional interrupção
