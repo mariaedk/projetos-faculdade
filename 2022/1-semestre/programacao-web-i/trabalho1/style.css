@@ -1,0 +1,157 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/* CONFIGURAÇÕES SOBRE E INDEX */
+header 
+{
+    position: relative;
+    height: auto;
+    background-color: #4ecdc4;
+}
+
+/* CONFIGURAÇÕES DO MENU */
+
+/* Barra que divide menu e o conteúdo principal */
+#topo-site-menu
+{ 
+    border-bottom: 2px solid rgba(0, 0, 0, 0.171);
+}
+
+/* logo+imagem */
+#logo
+{
+    display: flex;
+    height: 64px;
+    float: left;
+    background-color: #1a535c;
+    color: white;
+
+}
+
+/* parte usuário */
+#usuario
+{
+    display: flex;
+    height: 64px;
+    float: right;
+    background-color: #1a535c;
+    color: white;
+    
+}
+
+/* configurações da imagem da logo */
+.logo-topo
+{
+    display: block;
+    float: left;
+    width: 64px;
+}
+
+/*  configurações do texto do topo */
+.texto-topo
+{
+    display: flex;
+    float: left;
+    text-align: center;
+    justify-content: center;
+    line-height: 50px;
+}
+
+/* Configurações do menu de navegação */
+#menu-horizontal
+{
+    display: block;
+    height: 64px;
+    position: relative;
+}
+
+/* CONFIGURAÇÕES ITEM MENU*/
+#menu-horizontal ul li
+{
+    display: inline-block;
+    width: 100px;
+    padding: 5px;
+    text-align: center;
+    list-style: none;
+}
+/* CONFIGURAÇÕES LINK MENU */
+#menu-horizontal ul li a
+{
+    text-decoration: none;
+    display: block;
+
+    height: 100%;
+    font-size: 18px;
+    color: black;
+}
+
+/* FIM CONFIGURAÇÕES MENU */
+
+
+.container
+{
+    width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    display: grid;
+    align-items: center;
+    background-color: antiquewhite;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+.apresentacao-escola
+{
+    margin-bottom: 50px;
+}
+
+.apresentacao-escola p
+{
+    text-align: justify;
+    padding: 0 100px;
+}
+
+.apresentacao-escola h1
+{
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 30px;
+    color: #1a535c;
+}
+
+.informacoes-escola
+{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+#foto-info-escola
+{
+    margin-right: 50px;
+}
+
+/*  FOOTER */
+footer
+{
+    display: flex;
+    background-color: #4ecdc4;
+    min-height: 100px;
+    border-top: 2px solid rgba(0, 0, 0, 0.171);
+    text-align: center;
+    justify-content: center;
+}
+
+.rodape 
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
