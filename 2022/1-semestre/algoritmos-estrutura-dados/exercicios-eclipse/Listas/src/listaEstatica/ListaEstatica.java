@@ -7,14 +7,15 @@ import interfaces.Lista;
  * @author maria
  *
  */
-public class ListaEstatica implements Lista 
+public class ListaEstatica<T> implements Lista<T>
 {
-	private int[] info;
+	private T[] info;
 	private int tamanho;
 	
 	public ListaEstatica() 
 	{
-		info = new int[10];
+		// T é uma subclasse de Object, logo eu posso declarar ele como um vetor de objetos
+		info = (T[]) new Object[10];
 		tamanho = 0;
 	}	
 	
@@ -24,28 +25,23 @@ public class ListaEstatica implements Lista
 		return tamanho;
 	}
 
-	@Override
-	public void setTamanho(int tamanho) {
-		this.tamanho = tamanho;
-	}
-
-	public int[] getInfo() {
+	public T[] getInfo() {
 		return info;
 	}
 
-	public void setInfo(int[] info) {
+	public void setInfo(T[] info) {
 		this.info = info;
 	}
 
 	private void redimensionar()
 	{
 		// declara novo vetor
-		int[] novo;
+		T[] novo;
 		// declara o novo tamanho
 		int novoTamanho = info.length + 10;
 		
 		// determina o tamanho do novo vetor
-		novo = new int[novoTamanho];
+		novo = (T[]) new Object[novoTamanho];
 		
 		// processo de cópia de um vetor para outro
 		for (int i = 0; i < tamanho; i++) 
@@ -57,7 +53,7 @@ public class ListaEstatica implements Lista
 	}
 	
 	@Override
-	public void inserir(int valor)
+	public void inserir(T valor)
 	{
 		if (tamanho == info.length)
 		{
@@ -80,12 +76,13 @@ public class ListaEstatica implements Lista
 	}
 	
 	@Override
-	public int buscar(int valor)
+	public int buscar(T valor)
 	{
 		// percorrer somente as posições usadas
 		for (int posicao = 0; posicao < tamanho; posicao++)
 		{
-			if (info[posicao] == valor)
+			// comparar objetos pelo método equals
+			if (info[posicao].equals(valor))
 			{
 				return posicao;
 			}
@@ -95,7 +92,7 @@ public class ListaEstatica implements Lista
 	
 
 	@Override
-	public void retirar(int valor) {
+	public void retirar(T valor) {
 		int posicao = buscar(valor);
 		if (posicao != -1) {
 			for (int i = posicao; i < tamanho - 1; i++) {
@@ -113,7 +110,7 @@ public class ListaEstatica implements Lista
 	}
 	
 	@Override
-	public void concatenar(Lista outra)
+	public void concatenar(Lista<T> outra)
 	{	
 		for (int i = 0; i < outra.getTamanho(); i++)
 		{
@@ -122,11 +119,11 @@ public class ListaEstatica implements Lista
 	}
 	
 	@Override
-	public Lista dividir()
+	public Lista<T> dividir()
 	{
 		int metade = this.getTamanho()/2;
 
-		Lista listaRetornada = new ListaEstatica();
+		Lista<T> listaRetornada = new ListaEstatica<>();
 		
 		for (int i = metade; i < this.getTamanho(); i++)
 		{
@@ -137,9 +134,9 @@ public class ListaEstatica implements Lista
 	} 
 	
 	@Override
-	public Lista copiar()
+	public Lista<T> copiar()
 	{
-		Lista listaCopiada = new ListaEstatica();
+		ListaEstatica<T> listaCopiada = new ListaEstatica<>();
 		
 		for (int i = 0; i < info.length; i++)
 		{
@@ -150,7 +147,8 @@ public class ListaEstatica implements Lista
 	}
 
 	@Override
-	public int pegar(int posicao) {
+	public T pegar(int posicao) {
+		// maior beneficio do vetor: acesso direto ao valor
 		return info[posicao];
 	}
 	

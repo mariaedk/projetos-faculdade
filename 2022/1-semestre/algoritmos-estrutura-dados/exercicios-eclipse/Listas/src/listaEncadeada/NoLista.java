@@ -1,21 +1,25 @@
 package listaEncadeada;
 
-public class NoLista {
-	private int info;
-	private NoLista prox;
-	
-	public int getInfo() {
+import interfaces.NoListaInterface;
+
+public class NoLista<T> implements NoListaInterface<T>{
+	private T info;
+	private NoLista<T> prox;
+	@Override
+	public T getInfo() {
 		return info;
 	}
-	public void setInfo(int info) {
+	@Override
+	public void setInfo(T info) {
 		this.info = info;
 	}
-	public NoLista getProx() {
+	@Override
+	public NoLista<T> getProx() {
 		return prox;
 	}
-	public void setProx(NoLista prox) {
+	@Override
+	public void setProx(NoLista<T> prox) {
 		this.prox = prox;
 	}
-	
 	
 }

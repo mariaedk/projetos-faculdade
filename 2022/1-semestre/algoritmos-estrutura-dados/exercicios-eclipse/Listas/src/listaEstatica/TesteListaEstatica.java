@@ -6,7 +6,7 @@ import interfaces.Lista;
 
 public class TesteListaEstatica {
 	public static void main(String[] args) {
-		ListaEstatica lista = new ListaEstatica();
+		ListaEstatica<Integer> lista = new ListaEstatica<>();
 		ArrayList<Integer> listaParalela = new ArrayList<>();
 		
 		listaParalela.add(50);
@@ -23,7 +23,7 @@ public class TesteListaEstatica {
 		lista.inserir(91);
 		System.out.println("Lista original = "+lista.exibir());
 		
-		Lista novaLista;
+		Lista<Integer> novaLista;
 		novaLista = lista.dividir();
 		System.out.println("Primeira lista (original pela metade) = "+lista.exibir());
 		System.out.println("Lista criada pela divisão = "+novaLista.exibir());
@@ -35,7 +35,7 @@ public class TesteListaEstatica {
 		novaLista.concatenar(lista);
 		System.out.println("Lista concatenada (A+B) = "+novaLista.exibir());
 		
-		ListaEstatica terceira = (ListaEstatica) novaLista.copiar();
+		ListaEstatica<Integer> terceira = (ListaEstatica<Integer>) novaLista.copiar();
 		System.out.println("Lista copiada = "+terceira.exibir());
 		novaLista.retirar(100);
 		terceira.retirar(200);
