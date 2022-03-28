@@ -5,34 +5,92 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Escola</title>
 </head>
-<body>
-    <header>
-        <div class="topo-site">
-            <figure>
-                <img src="https://img.icons8.com/officel/80/000000/school.png" alt="Logo escola"/>
-                <h1>Escola</h1>
-            </figure>
+    <body>
+        <!-- TAREFINHA PARA NICOLE E RODRIGO -->
+<!-- https://www.youtube.com/watch?v=-rNQeJi3Wp4&ab_channel=CodAffection -->
+<!-- https://www.youtube.com/watch?v=cFCplYyUOfY&ab_channel=AlexMaldonadoNoh -->
+<!-- ARRUMAR O EDITAR -->
+        <header>
+            <div class="topo-site">
+                <figure id="logo-inicio">
+                    <!-- Contâiner para imagem -->
+                    <a href="index.html"><img class="logo-topo" src="https://img.icons8.com/officel/80/000000/school.png" alt="Logo do topo do site"></a>
+                    <h1 class="texto-topo">Escola</h1>
+                </figure>
 
-            <nav class="menu-horizontal">
+                <figure id="usuario-inicio">
+                    <img class="logo-topo" src="https://img.icons8.com/external-justicon-lineal-color-justicon/64/000000/external-student-back-to-school-justicon-lineal-color-justicon.png" alt="Informações usuário"/>
+                    <h3 class="texto-topo">Nome Usuário</h3>
+                </figure>      
+            </div>
+
+            <br><br><br><br><br>
+
+            <nav class="topnav" id="myTopnav">
                 <ul>
-                    <li><a href="">Link 1</a></li>
-                    <li><a href="">Link 2</a></li>
-                    <li><a href="">Link 3</a></li>
+                    <li><a href="#home" class="active">Início</a></li>
+                    <li><a href="Contatos.html">Contatos</a></li>
+                    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                        <i class="fa fa-bars"></i>
+                    </a>
                 </ul>
             </nav>
-        </div>
-    </header>
+            
+        </header>
+        <table>
+            <tr>
+                <td>
+        <!-- CRUDL -->
+            <!-- html for for crud operations -->
+            <form onsubmit="event.preventDefault(); onFormSubmit();">
+                <div>
+                    <label for="">Nome:</label>
+                    <input type="text" name="nome" placeholder="Insira o nome do aluno" id="nome">
+                </div>
+                <div>
+                    <label for="">Código do aluno:</label>
+                    <input type="text" name="codigo" placeholder="Insira o código do aluno" id="codigo">
+                </div>
+                <div>
+                    <label for="">Idade:</label>
+                    <input type="text" name="idade" placeholder="Insira a idade do aluno" id="idade">
+                </div>
+                <div class="form-action-buttons">
+                    <input type="submit" value="Cadastrar">
+                </div>
+            </form>
+        </td>
+        <td>
+            <table class="list" id="alunoList">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Código</th>
+                        <th>Idade</th>
+                        <th></th>
+                    </tr>
+                </thead>
 
-    <main>
+                <tbody>
 
-    </main>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
 
-    <footer>
-        <section class="rodape">
-            <p>Maria Eduarda Krutzsch, Nicole Bauchspiess, Rodrigo Kapulka Franco</p>
-        </section>
-    </footer>
-</body>
+
+        <!-- FOOTER -->
+        <footer>
+            <section class="rodape">
+                <p>Maria Eduarda Krutzsch, Nicole Bauchspiess, Rodrigo Kapulka Franco</p>
+            </section>
+        </footer>
+        
+        <script src="script.js"></script>
+            
+    </body>
 </html>
