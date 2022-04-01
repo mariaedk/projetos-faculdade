@@ -1,6 +1,5 @@
 package listaEncadeada;
 
-
 public class TesteListaDinamica {
 
 		public static void main(String[] args) {

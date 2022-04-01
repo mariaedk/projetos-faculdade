@@ -1,23 +1,28 @@
 package listaEncadeada;
 
-public class NoLista<T> implements NoListaInterface<T>{
+public class NoLista<T> {
 	private T info;
-	private NoLista<T> prox;
-	@Override
+	private NoLista<T> proximo;
+	// novo atributo criado: anterior (saber qual que é o objeto anterior ao próximo)
+	private NoLista<T> anterior;
+	
+	public NoLista<T> getAnterior() {
+		return anterior;
+	}
+	public void setAnterior(NoLista<T> anterior) {
+		this.anterior = anterior;
+	}
 	public T getInfo() {
 		return info;
 	}
-	@Override
 	public void setInfo(T info) {
 		this.info = info;
 	}
-	@Override
-	public NoLista<T> getProx() {
-		return prox;
+	public NoLista<T> getProximo() {
+		return proximo;
 	}
-	@Override
-	public void setProx(NoLista<T> prox) {
-		this.prox = prox;
+	public void setProximo(NoLista<T> proximo) {
+		this.proximo = proximo;
 	}
 	
 }

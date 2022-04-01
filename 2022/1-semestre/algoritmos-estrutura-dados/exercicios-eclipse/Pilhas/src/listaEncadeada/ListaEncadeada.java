@@ -1,14 +1,146 @@
 package listaEncadeada;
 
-
 public class ListaEncadeada<T> implements Lista<T> {
 	private NoLista<T> primeiro;
 	private NoLista<T> ultimo;
 	private int qtdElem;
 
-	public ListaEncadeada() 
+	public NoLista<T> getUltimo() {
+		return ultimo;
+	}
+
+	public void setUltimo(NoLista<T> ultimo) {
+		this.ultimo = ultimo;
+	}
+
+	@Override
+	public void inserir(T valor) {
+		// inserção ao final da lista
+		NoLista<T> novo = new NoLista();
+		// seta o valor passado para esse objeto
+		novo.setInfo(valor);
+		
+		// se a lista estiver vazia, preciso adicionar um primeiro objeto. logo, primeiro aponta para novo
+		if (this.estaVazia())
+		{
+			primeiro = novo;
+		} 
+		// se não, o meu último objeto passa a apontar para este novo e o anterior é este último
+		else 
+		{
+			ultimo.setProximo(novo);
+			// alteração
+			novo.setAnterior(ultimo);
+		}
+		// atualiza o valor da variável último para sabermos quem é o último objeto da lista
+		ultimo = novo;
+		qtdElem++;
+	}
+
+	@Override
+	public String exibir() 
 	{
-		primeiro = null;
+		// este método exibe a lista encadeada na sua forma normal, do primeiro objeto inserido até o último
+		NoLista<T> p = primeiro;
+		String resultado = "[";
+
+		while (p != null) 
+		{
+			resultado += p.getInfo() + ", ";
+			p = p.getProximo();
+		}
+
+		return resultado + "]";
+	}
+	
+	public String exibirContrario()
+	{
+		// este método exibe a lista encadeada ao contrário; segue o padrão da pilha
+		// a pilha tem como primeiro elemento o último adicionado. logo, precisa imprimir de trás para frente
+		NoLista<T> u = ultimo;
+		String resultado = "-> topo [";
+		
+		// contador é = ao total de elementos
+		int contador = this.getTamanho();
+		// enquanto não chega ao fim da lista
+		while (contador != 0)
+		{
+			// printa de trás pra frente
+			resultado += u.getInfo() + ", ";
+			u = u.getAnterior();
+			// decrementa contador para ir ao anterior
+			contador--;
+		}
+		return resultado + "] <- base";
+	}
+
+	@Override
+	public int buscar(T valor) {
+		int posicao = 0;
+		NoLista<T> p = primeiro;
+
+		while (p != null) {
+			if (p.getInfo().equals(valor)) {
+				return posicao;
+			}
+			posicao++;
+			p = p.getProximo();
+		}
+		return -1;
+	}
+
+	@Override
+	public void retirar(T valor) {
+		NoLista<T> a = null;
+		NoLista<T> p = primeiro;
+
+		while (p != null && !p.getInfo().equals(valor))
+		{
+			a = p;
+			p = p.getProximo();
+			// modificação -> guarda referência do anterior
+			p.setAnterior(a);
+		}
+
+		if (p != null) 
+		{ 
+			// significa que encontrou o elemento a ser retirado
+			if (a == null)
+			{
+				primeiro = p.getProximo();
+			}
+			else 
+			{	
+				a.setProximo(p.getProximo());
+			}
+			qtdElem--;
+			if (ultimo == p) 
+			{
+				ultimo = a;
+			}
+		}
+	}
+
+	@Override
+	public Lista<T> copiar() {
+		ListaEncadeada<T> novaLista = new ListaEncadeada<>();
+		NoLista<T> no = primeiro;
+
+		while (no != null) {
+			novaLista.inserir(no.getInfo());
+			no = no.getProximo();
+		}
+
+		return novaLista;
+	}
+
+	@Override
+	public void concatenar(Lista<T> outra)
+	{ 
+		for (int i = 0; i < outra.getTamanho(); i++) 
+		{
+			this.inserir(outra.pegar(i));
+		}
 	}
 
 	@Override
@@ -16,220 +148,49 @@ public class ListaEncadeada<T> implements Lista<T> {
 		return qtdElem;
 	}
 
-	public void setTamanho(int tamanho) {
-		this.qtdElem = tamanho;
-	}
-
-
-	public NoLista<T> getPrimeiro() {
-		return primeiro;
-	}
-
-	public void setPrimeiro(NoLista<T> primeiro) {
-		this.primeiro = primeiro;
-	}
-
-	@Override
-	public void inserir(T valor) {
-		// cria um novo objeto de Nó
-		NoLista<T> novoNo = new NoLista<T>();
-
-		// se a lista está vazia, o primeiro elemento será adicionado
-		if (this.estaVazia())
-		{
-			primeiro = novoNo;
-		}
-		// se não está vazia, faz o último objeto adicionado apontar para o novo objeto de nó
-		else
-		{
-			ultimo.setProx(novoNo);
-		}
-		// faz com que o último adicionado seja o novo nó
-		ultimo = novoNo;
-		System.out.println("Primeiro:"+primeiro.getInfo());
-		System.out.println("último:"+ultimo.getInfo());
-		// aumenta qtd elementos
-		qtdElem++;
-	}
-
-	@Override
-	public String exibir() 
-	{
-		// cria objeto Nó "p" e iguala ele ao primeiro objeto da lista
-		NoLista<T> p = primeiro;
-		String exibeInformacao = "[ ";
-		
-		// enquanto a referência do próximo objeto não for nula, ou seja, não chegar ao fim da lista
-		while (p != null)
-		{
-			exibeInformacao += p.getInfo().toString() + " ,";
-			// pega o próximo objeto da lista
-			p = p.getProx();
-		}
-		return exibeInformacao + " ]";
-	}
-
-	@Override
-	public int buscar(T valor) {
-		NoLista<T> p = primeiro;
-		int posicao = 0;
-		
-		while (p != null)
-		{
-			if (p.getInfo().equals(valor))
-			{
-				return posicao;
-			}
-			p = p.getProx();
-			posicao++;
-		}
-		return -1;
-	}
-
-	@Override
-	public void retirar(T valor) {
-		NoLista<T> anterior = null;
-		NoLista<T> p = primeiro;
-		// enquanto não encontrar o valor a ser retirado
-		while ((p != null) && (!(p.getInfo().equals(valor))))
-		{
-			// vai percorrendo a lista
-			// o atual vai ser o anterior
-			anterior = p;
-			// o novo vai ser o próximo
-			p = p.getProx();
-		}
-		// se achou o valor
-		// garante que não chegou no fim da lista
-		if (p != null)
-		{
-			// se for o primeiro elemento
-			if (anterior == null)
-			{
-				// se o meu primeiro elemento for o que eu desejo retirar, faz com que agora o primeiro elemento
-				// se torne o próximo da lista, já que tem que remover
-				this.primeiro = p.getProx();
-			}
-			else
-			{
-				// faz com que o objeto anterior do deletado tenha como referência de próximo o próximo elemento do objeto deletado
-				anterior.setProx(p.getProx());
-			}
-			qtdElem--;
-			// atualizar a variável ultimo
-			// se deletei o último objeto, o último passa a ser o anterior deste
-			if (ultimo == p)
-			{
-				ultimo = anterior;
-			}
-		}
-	}
-
 	@Override
 	public boolean estaVazia() {
-		if (this.primeiro == null)
-		{
-			return true;
-		}
-		return false;
+		return (primeiro == null);
 	}
 
 	@Override
-	public void concatenar(Lista<T> outra) 
-	{
-
-		for (int i = 0; i < outra.getTamanho(); i++)
-		{
-			this.inserir(outra.pegar(i));
-		}
-		
-	}
-
-	@Override
-	public Lista<T> dividir()
-	{
-		// criando uma nova lista do tipo listaencadeada
-		Lista<T> listaRetornada = new ListaEncadeada<T>();
-		
-		if (this.estaVazia())
-		{
-			return listaRetornada;
-		}
-		
-		NoLista<T> p = primeiro;
-		NoLista<T> novoUltimo = null;
-		
-		int metade = this.getTamanho()/2;
-		int contador = 1;
-		
-		while (p != null)
-		{
-			// enquanto nao for menor do que a metade, vai caminhando pela lista
-			if (contador > metade)
-			{
-				// chegou acima da metade, começa a inserir
-				listaRetornada.inserir(p.getInfo());
-			}
-			else
-			{
-				// vai entrar aqui até que chegue na metade, assim mantendo a informação
-				novoUltimo = p;
-			}
-			// caminha
-			contador++;
-			p = p.getProx();
-		}
-		// quebra a corrente setando o ultimo como o da metade
-		ultimo = novoUltimo;
-		ultimo.setProx(null);
-		return listaRetornada;
-	}
-
-	@Override
-	public Lista<T> copiar() {
-		ListaEncadeada<T> novaLista = new ListaEncadeada<>();
-		// cria um noLista e faz ele apontar para o primeiro
-		NoLista<T> p = primeiro;
-		// enquanto nao chegar no ultimo
-		while (p != null)
-		{
-			// insere na novaLista a info do noLista
-			novaLista.inserir(p.getInfo());
-			// pula para o próximo nó
-			p = p.getProx();
-		}
-		
-		return novaLista;
-		
-	}
-
-	@Override
-	public T pegar(int posicao) 
-	{
-		// se a posição for negativa ou nao for valida
-		if (posicao < 0 || posicao >= this.qtdElem)
-		{
-			throw new IndexOutOfBoundsException("Posição: " + posicao + "; Tamanho: " + qtdElem);
-		}
-		
-		NoLista<T> p = primeiro;
-		
-		int contador = 0;
-		
-		
-		while (p != null)
-		{
-			if (contador == posicao)
-			{
-				return p.getInfo();
-			}
-			// enquanto não encontrar o valor a ser pego
-			p = p.getProx();
-			contador++;
-		}
-		
-		return null;  // nunca deveria chegar aqui
-		
-	}
+	 public Lista<T> dividir()
+	{  
+        NoLista<T> no = primeiro;
+        ListaEncadeada<T> listaNova = new ListaEncadeada<>();
+        int metade = this.getTamanho() / 2;
+        int contador = 1;
+        NoLista<T> novoUltimo = null;
+       
+        while(no != null) {
+            if(contador > metade) {
+                listaNova.inserir(no.getInfo());
+            }
+            else {
+            	novoUltimo = no;
+            }
+            contador++;
+            no = no.getProximo();
+        }
+        ultimo = novoUltimo;
+        ultimo.setProximo(null);
+        qtdElem = metade;
+        return listaNova;
+    }
 	
+	@Override
+	public T pegar(int pos)
+	{ 
+		if (pos < 0 || pos >= this.qtdElem) {
+			throw new IndexOutOfBoundsException("Posicao=" + pos + "; Tamanho=" + qtdElem);
+		}
+		NoLista<T> no = primeiro;
+
+		for (int i = 0; i < pos; i++) {
+			no = no.getProximo();
+		}
+
+		return no.getInfo();
+	}
+
 }
