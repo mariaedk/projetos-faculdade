@@ -1,3 +1,0 @@
-INDEX VERSION 1.131+D:\estudos\FACULDADE\furb\2022\1-semestre\algoritmos-estrutura-dados\exercicios-eclipse\.metadata\.plugins\org.eclipse.jdt.core
-1865797976.index
-171521544.index
