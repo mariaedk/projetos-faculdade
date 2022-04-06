@@ -1,294 +1,258 @@
-*
-{
-    margin: 0;
-    padding: 0;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+/* CONFIGURAÇÕES GLOBAIS */
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-/* CONFIGURAÇÕES SOBRE E INDEX */
-header 
-{
-  background-color: #4ecdc4;
+/* ===================================================== */
+
+/* INDEX.HTML    CONTATOS.HTML */
+
+
+/* MENU */
+header {
+  background-color: #593F42;
 }
 
-/* Quase igual o #logo normal mas sem background*/
-#logo-inicio
-{
-    display: flex;
-    height: 64px;
-    float: left;
-    color: white;
+#logo-inicio {
+  display: flex;
+  float: left;
+  color: white;
+  margin-top: 10px;
 }
 
-/* #usuario + borda*/
-#usuario-inicio
-{
+/* #usuario + borda */
+#usuario-inicio {
   display: flex;
   height: 64px;
   float: right;
-  background-color: #1a535c;
-  color: white;
+  background-color: #F2E3B3;
+  color: black;
   border: 3px solid rgba(0, 0, 0, 0.171);
   border-bottom-left-radius: 20px;
 }
 
-/* CONFIGURAÇÕES DO MENU */
-
-/* Barra que divide menu e o conteúdo principal */
-#topo-site-menu
-{ 
-    border-bottom: 2px solid rgba(0, 0, 0, 0.171);
-}
-
-/* logo+imagem */
-#logo
-{
-    display: flex;
-    height: 64px;
-    float: left;
-    background-color: #1a535c;
-    color: white;
-
-}
-
-/* parte usuário */
-#usuario
-{
-    display: flex;
-    height: 64px;
-    float: right;
-    background-color: #1a535c;
-    color: white;
-    
+#topo-site-menu {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.171);
 }
 
 /* configurações da imagem da logo */
-.logo-topo
-{
-    display: block;
-    float: left;
-    width: 64px;
+.logo-topo {
+  display: block;
+  float: left;
+  width: 64px;
+  padding-left: 10px;
 }
 
-/*  configurações do texto do topo */
-.texto-topo
-{
-    display: flex;
-    float: left;
-    text-align: center;
-    justify-content: center;
-    line-height: 50px;
+/*  configurações do texto da logo e do usuário*/
+.texto-topo-logo-inicial {
+  display: flex;
+  float: left;
+  text-align: center;
+  justify-content: center;
+  line-height: 64px;
+  font-size: 40px;
+  margin-left: 20px;
 }
 
+.texto-topo-usuario {
+  display: flex;
+  float: left;
+  text-align: center;
+  justify-content: center;
+  line-height: 64px;
+}
 
-.topnav 
-{
+.topnav {
   background-color: #333;
   overflow: hidden;
 }
-  
+
 /* cor padrao sem link selecionado */
-.topnav a
-{
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 19px;
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  text-decoration: none;
+  padding: 14px 16px;
+  font-size: 19px;
 }
 
-  .topnav li {
-    float: left;
-    display: block;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 0 14px 0;
-    text-decoration: none;
-    font-size: 17px;
-  }
-  
-    /* muda a cor do link selecionado */
-  .topnav li a:hover {
-    background-color: #ddd;
-    color: black;
-  }
-  
-    /* muda a cor do link da pagina atual */
-  .topnav li a.active {
-    background-color: #1a535c;
-    color: white;
-  }
-  
-
-  .topnav .icon {
-    display: none;
-  }
-
-
-
-.container
-{
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-    display: grid;
-    align-items: center;
-    background-color: antiquewhite;
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+/* muda a cor do link selecionado */
+.topnav a:hover {
+  background-color: #F2E3B3;
+  color: black;
 }
 
-.apresentacao-escola
-{
-    margin-bottom: 50px;
+/* muda a cor do link da pagina atual */
+.topnav a.active {
+  background-color: #38F29B;
+  color: black;
 }
 
-.apresentacao-escola p
-{
-    text-align: justify;
-    padding: 0 100px;
+.topnav .icon {
+  display: none;
 }
 
-.apresentacao-escola h1
-{
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 30px;
-    color: #1a535c;
+/* FIM MENU */
+
+
+/* ===================================================== */
+
+
+/* CONTATOS.HTML */
+
+
+
+/* PARTE CENTRAL */
+.wrapper {
+  /* largura menor que a tela */
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.informacoes-escola
-{
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
+.topo-destaque-content {
+  text-align: center;
+  background-color: papayawhip;
+  padding-top: 20em;
+  padding-bottom: 20em;
+  background: url('./_img/livraria.jpg');
+  background-size: cover;
+  color: white;
+  font-weight: 800;
+  box-shadow: inset 6px 6px 13px 0px rgba(0, 0, 0, 0.555);
 }
 
-#foto-info-escola
-{
-    margin-right: 50px;
+#art-destaque {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-shadow: 1px 1px 0px black;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-/*  FOOTER */
-footer
-{
-    display: flex;
-    background-color: #4ecdc4;
-    min-height: 100px;
-    border-top: 2px solid rgba(0, 0, 0, 0.171);
-    text-align: center;
-    justify-content: center;
+#art-destaque h1 {
+  font-size: 1.6em;
 }
 
-.rodape 
-{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+#art-destaque p {
+  display: flex;
+  font-size: 17px;
+  line-height: 32px;
+  justify-content: center;
+  text-align: center;
 }
 
-
-.form-cadastro
-{
-    text-align: center;
-    font-size: 25px;
+#art-destaque .texto-destaque {
+  padding: 0 5px;
+  background-color: bisque;
+  color: black;
+  text-shadow: none;
 }
 
-.cadastro{
-    background-color: #1a535c;
-    text-align: center;
+.apresentacao-escola {
+  margin-bottom: 50px;
 }
 
-.botao{
-    font-size: 25px;
-  }
-  
-.icon{
-    width: 60px; /* width of container */
-    height: 60x; /* height of container */
-    object-fit: cover;
-    padding-right: 10px;
+.apresentacao-escola p {
+  text-align: justify;
+  padding: 0 100px;
 }
 
-.contatos{
-    font-size: 25px; 
-    width: 100%; 
+.base-destaque-content {
+  display: grid;
+  text-align: center;
+  background-color: #fee0cf9f;
+  padding-top: 5em;
+  padding-bottom: 10em;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
-
-div#container
-{
-    overflow-x: auto;
+.texto-media {
+  background-color: #e672309f;
+  margin-bottom: 4em;
+  font-size: 30px;
+  padding: 20px 0;
 }
 
-.cont{
-    background-color: #1a535c;
-    text-align: center;
+.media-contatos {
+  width: 560px;
+  height: 315px;
+  margin: 10px;
 }
 
-@media screen and (max-width: 600px) 
-{
-  .topnav .responsive 
-  {
-    position: relative;
-  }
-  .topnav.responsive .icon {
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-  .topnav.responsive a {
-    float: none;
-    display: block;
-    text-align: left;
-  }
+/* CONFIGURAÇÕES ÍCONES E TITULO*/
+.icon {
+  width: 32px;
+  /* width of container */
+  height: 32px;
+  /* height of container */
+  object-fit: cover;
+  padding-right: 10px;
 }
 
+.contatos {
+  font-size: 25px;
+  width: 100%;
+}
+
+.cont {
+  background-color: #F2B279;
+  text-align: center;
+  margin-top: 2em;
+  padding: 20px 0;
+}
+
+/* FIM CONTATOS.HTML */
 
 
+/* ===================================================== */
 
 
+/* INDEX HTML */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* CONFIGURAÇÕES CRUDL PAÁGINA INDEX.HTML */
-body > table{
+/* CONFIGURAÇÕES CRUDL PÁGINA INDEX.HTML */
+body>table {
   width: 80%;
 }
 
-table{
-  border-collapse: collapse;
-}
-table.list{
-  width:100%;
+.tabelas {
+  display: block;
 }
 
-td, th {
-  border: 1px solid #dddddd;
+.titulo-formulario {
+  font-size: 40px;
+}
+
+table.list {
+  width: 100%;
+}
+
+td,
+th {
   text-align: left;
   padding: 8px;
 }
-tr:nth-child(even),table.list thead>tr {
+
+tr:nth-child(even),
+table.list thead>tr {
   background-color: #dddddd;
 }
 
-input[type=text], input[type=number] {
+.label-form {
+  font-size: 18px;
+}
+
+.info-cadastro {
+  margin: 20px 0;
+}
+
+input[type=text],
+input[type=number] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -298,33 +262,192 @@ input[type=text], input[type=number] {
   box-sizing: border-box;
 }
 
-input[type=submit]{
-  width: 30%;
-  background-color: #ddd;
+input[type=submit],
+input[type=reset] {
+  background-color: #88F2AD;
   color: #000;
+  font-size: 18px;
   padding: 14px 20px;
-  margin: 8px 0;
+  margin: 8px 10px 8px 0;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-form div.form-action-buttons{
+input[type=submit]:hover,
+input[type=reset]:hover {
+  background-color: #27b170;
+  transition: .5s;
+}
+
+.botoes-form {
+  display: flex;
+  width: 100%;
+}
+
+form div.form-action-buttons {
   text-align: right;
 }
 
-a{
-  cursor: pointer;
-  text-decoration: underline;
-  color: #0000ee;
-  margin-right: 4px;
+#tabela-cadastro {
+  margin-bottom: 3em;
 }
 
-label.validation-error{
-  color:   red;
+#alunoList {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  background-color: white;
+}
+
+#alunoList td,
+th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#alunoList tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#alunoList th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #27b170;
+  color: white;
+}
+
+a {
+  cursor: pointer;
+  color: #135e3b;
+  font-size: 18px;
+}
+
+label.validation-error {
+  color: red;
   margin-left: 5px;
 }
 
-.hide{
-  display:none;
+.hide {
+  display: none;
+}
+
+/* FIM INDEX HTML */
+
+
+
+/* ===================================================== */
+
+
+/*  FOOTER INDEX E CONTATOS*/
+footer {
+  display: flex;
+  background-color: #593F42;
+  min-height: 100px;
+  color: white;
+  border-top: 2px solid rgba(0, 0, 0, 0.171);
+  text-align: center;
+  justify-content: center;
+}
+
+.rodape {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+/* FIM CONFIGURAÇÕES CSS */
+
+/* ===================================================== */
+
+
+/* MEDIA QUERY MENU */
+@media screen and (max-width: 750px) {
+  .topnav .responsive {
+    position: relative;
+  }
+
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+
+  .media-contatos {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .base-destaque-content {
+    background-color: white;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  /* #usuario + borda */
+  #usuario-inicio {
+    height: 40px;
+    border-bottom-left-radius: 20px;
+  }
+
+  /* configurações da imagem da logo */
+  .logo-topo {
+    width: 40px;
+    padding-left: 10px;
+  }
+
+  /*  configurações do texto da logo e do usuário*/
+  .texto-topo-logo-inicial {
+    line-height: 30px;
+    font-size: 30px;
+    margin-left: 15px;
+  }
+
+  .texto-topo-usuario {
+    line-height: 40px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child) {
+    display: none;
+  }
+
+  .topnav a.icon {
+    float: left;
+    display: block;
+  }
+
+  .topnav.responsive {
+    position: relative;
+  }
+
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+
+  .topnav .icon {
+    display: none;
+    width: auto;
+    height: auto;
+  }
 }

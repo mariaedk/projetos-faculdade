@@ -13,74 +13,69 @@
 <body>
   <header>
     <div class="topo-site">
-        <figure id="logo-inicio">
-            <!-- Contâiner para imagem -->
-            <a href="index.html"><img class="logo-topo" src="https://img.icons8.com/officel/80/000000/school.png" alt="Logo do topo do site"></a>
-            <h1 class="texto-topo">Escola</h1>
-        </figure>
+      <figure id="logo-inicio">
+        <!-- Contâiner para imagem -->
+        <a href="index.html"><img class="logo-topo" src="https://img.icons8.com/officel/80/000000/school.png"
+            alt="Logo do topo do site"></a>
+        <h1 class="texto-topo-logo-inicial">Escola</h1>
+      </figure>
 
-        <figure id="usuario-inicio">
-            <img class="logo-topo" src="https://img.icons8.com/external-justicon-lineal-color-justicon/64/000000/external-student-back-to-school-justicon-lineal-color-justicon.png" alt="Informações usuário"/>
-            <h3 class="texto-topo">Nome Usuário</h3>
-        </figure>
-        
+      <figure id="usuario-inicio">
+        <img class="logo-topo"
+          src="https://img.icons8.com/external-justicon-lineal-color-justicon/64/000000/external-student-back-to-school-justicon-lineal-color-justicon.png"
+          alt="Informações usuário" />
+        <h3 class="texto-topo-usuario">Nome Usuário</h3>
+      </figure>
+
 
     </div>
     <br><br><br><br><br>
-    <nav class="topnav"  id="myTopnav">
-      <ul>
-          <li><a href="index.html">Início</a></li>
-          <li><a href="Contatos.html" class="active">Contatos</a></li>
-          <li><a href="javascript:void(0);" class="icon" onclick="myFunction()">
-            <i class="fa fa-bars"></i>
-          </a></li>
-      </ul>
+
+    <nav class="topnav" id="topnav-contatos">
+      <a href="index.html">Início</a></li>
+      <a href="#" class="active">Contatos</a></li>
+      <a href="javascript:void(0);" class="icon" onclick="myFunctionContatos()">
+          <i class="fa fa-bars"></i>
+      </a>
   </nav>
-</header>
 
-  <main>
+  </header>
+
+  <main class="wrapper">
     <h1 class="cont">Contatos</h1>
-    <div class="container">
+    <div class="topo-destaque-content">
+      <article id="art-destaque">
+        <h1>Maria Eduarda Krutzsch</h1>
+        <p><img class="icon" src="https://img.icons8.com/fluency/344/instagram-new.png" alt="instagram">@maria.edk</p>
+        <p><img class="icon" src="https://img.icons8.com/color/344/whatsapp--v1.png" alt="telefone">(47) 99118-0304</p>
+        <p><img class="icon" src="https://img.icons8.com/color/344/gmail-new.png" alt="email">mekrutzsch@furb.br</p>
 
-      <div id="container">
-        <table class="contatos">
-          <tr>
-            <th></th>
-            <th>Maria E. Krutzsch</th>
-            <th>Nicole Bauchspiess</th>
-            <th>Rodrigo K. Franco</th>
-          </tr>
-          <tr>
-            <td><img class="icon" src="https://img.icons8.com/fluency/344/instagram-new.png" alt="instagram"></td>
-            <td>@maria.edk</td>
-            <td>@bauchspiess_</td>
-            <td>@rodrigokafra</td>
-          </tr>
-          <tr>
-            <td><img class="icon" src="https://img.icons8.com/color/344/whatsapp--v1.png" alt="telefone"></td>
-            <td>(47) 99118-0304 </td>
-            <td>(47) 98821-0696</td>
-            <td>(47) 98482-5800</td>
-          </tr>
-          <tr>
-            <td><img class="icon" src="https://img.icons8.com/color/344/gmail-new.png" alt="email"></td>
-            <td>mekrutzsch@furb.br</td>
-            <td>nbauchspiess@furb.br</td>
-            <td>rkfranco@furb.br</td>
-          </tr>
-        </table>
-      </div>
+        <h1>Nicole Bauchspiess</h1>
+        <p><img class="icon" src="https://img.icons8.com/fluency/344/instagram-new.png" alt="instagram">@bauchspiess_
+        </p>
+        <p><img class="icon" src="https://img.icons8.com/color/344/whatsapp--v1.png" alt="telefone">(47) 98821-0696</p>
+        <p><img class="icon" src="https://img.icons8.com/color/344/gmail-new.png" alt="email">nbauchspiess@furb.br</p>
 
+        <h1>Rodrigo K. Franco</h1>
+        <p><img class="icon" src="https://img.icons8.com/fluency/344/instagram-new.png" alt="instagram">@rodrigokafra
+        </p>
+        <p><img class="icon" src="https://img.icons8.com/color/344/whatsapp--v1.png" alt="telefone">(47) 98482-5800</p>
+        <p><img class="icon" src="https://img.icons8.com/color/344/gmail-new.png" alt="email">rkfranco@furb.br</p>
+      </article>
+    </div>
 
+    <div class="base-destaque-content">
+      <h2 class="texto-media">Conheça nosso trabalho</h2>
       <article class="informacoes-escola">
-        <img id="foto-info-escola" width="560" height="315" src="foto-student-1.jpg" alt="Grupo de estudantes">
-        <iframe alt="Vídeo youtube da escola" width="560" height="315" src="https://www.youtube.com/embed/7mXzWyTGf-k" title="YouTube video player"
-          frameborder="0"
+        <iframe class="media-contatos" alt="Vídeo youtube da escola" width="560" height="315"
+          src="https://www.youtube.com/embed/7mXzWyTGf-k" title="YouTube video player" frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen>
         </iframe>
+        <img src="_img/foto-student-1.jpg" alt="" class="media-contatos">
       </article>
     </div>
+
   </main>
 
   <footer>
@@ -88,7 +83,6 @@
       <p>Maria Eduarda Krutzsch, Nicole Bauchspiess, Rodrigo Kapulka Franco</p>
     </section>
   </footer>
-
   <script src="script.js"></script>
 </body>
 

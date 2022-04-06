@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,62 +9,76 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Escola</title>
 </head>
-    <body>
-        <!-- TAREFINHA PARA NICOLE E RODRIGO -->
-<!-- https://www.youtube.com/watch?v=-rNQeJi3Wp4&ab_channel=CodAffection -->
-<!-- https://www.youtube.com/watch?v=cFCplYyUOfY&ab_channel=AlexMaldonadoNoh -->
-<!-- ARRUMAR O EDITAR -->
-        <header>
-            <div class="topo-site">
-                <figure id="logo-inicio">
-                    <!-- Contâiner para imagem -->
-                    <a href="index.html"><img class="logo-topo" src="https://img.icons8.com/officel/80/000000/school.png" alt="Logo do topo do site"></a>
-                    <h1 class="texto-topo">Escola</h1>
-                </figure>
 
-                <figure id="usuario-inicio">
-                    <img class="logo-topo" src="https://img.icons8.com/external-justicon-lineal-color-justicon/64/000000/external-student-back-to-school-justicon-lineal-color-justicon.png" alt="Informações usuário"/>
-                    <h3 class="texto-topo">Nome Usuário</h3>
-                </figure>      
-            </div>
+<body>
+    <header>
+        <div class="topo-site">
+            <figure id="logo-inicio">
+                <!-- Contâiner para imagem -->
+                <a href="index.html"><img class="logo-topo" src="https://img.icons8.com/officel/80/000000/school.png"
+                        alt="Logo do topo do site"></a>
+                <h1 class="texto-topo-logo-inicial">Escola</h1>
+            </figure>
 
-            <br><br><br><br><br>
+            <figure id="usuario-inicio">
+                <img class="logo-topo"
+                    src="https://img.icons8.com/external-justicon-lineal-color-justicon/64/000000/external-student-back-to-school-justicon-lineal-color-justicon.png"
+                    alt="Informações usuário" />
+                <h3 class="texto-topo-usuario">Nome Usuário</h3>
+            </figure>
+        </div>
 
-            <nav class="topnav" id="myTopnav">
-                <ul>
-                    <li><a href="#home" class="active">Início</a></li>
-                    <li><a href="Contatos.html">Contatos</a></li>
-                    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                        <i class="fa fa-bars"></i>
-                    </a>
-                </ul>
-            </nav>
-            
-        </header>
-        <table>
-            <tr>
-                <td>
-        <!-- CRUDL -->
-            <!-- html for for crud operations -->
-            <form onsubmit="event.preventDefault(); onFormSubmit();">
-                <div>
-                    <label for="">Nome:</label>
-                    <input type="text" name="nome" placeholder="Insira o nome do aluno" id="nome">
-                </div>
-                <div>
-                    <label for="">Código do aluno:</label>
-                    <input type="text" name="codigo" placeholder="Insira o código do aluno" id="codigo">
-                </div>
-                <div>
-                    <label for="">Idade:</label>
-                    <input type="text" name="idade" placeholder="Insira a idade do aluno" id="idade">
-                </div>
-                <div class="form-action-buttons">
-                    <input type="submit" value="Cadastrar">
-                </div>
-            </form>
-        </td>
-        <td>
+        <br><br><br><br><br>
+
+        <nav class="topnav" id="myTopnav">
+            <a href="#home" class="active">Início</a></li>
+            <a href="contatos.html">Contatos</a></li>
+            <a href="javascript:void(0);" class="icon" onclick="myFunctionIndex()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </nav>
+    </header>
+
+    <main class="wrapper">
+        <div class="base-destaque-content">
+            <h2 class="titulo-formulario">Formulário de cadastro</h2>
+            <table id="tabela-cadastro">
+                <tr>
+                    <td>
+                        <!-- CRUDL -->
+                        <!-- html for for crud operations -->
+                        <form onsubmit="event.preventDefault(); onFormSubmit();">
+                            <div class="info-cadastro">
+                                <label class="label-form">Nome:*</label><label class="validation-error hide"
+                                    id="nameValidationError">Este
+                                    campo é obrigatório.</label>
+                                <input type="text" name="nome" placeholder="Insira o nome do aluno" id="nome">
+                            </div>
+                            <div class="info-cadastro">
+                                <label class="label-form">Código do aluno:</label><label class="validation-error hide"
+                                    id="codeValidationError">Código já existente. Por favor, revise os dados
+                                    inseridos.</label>
+                                <input type="text" name="codigo" placeholder="Insira o código do aluno" id="codigo">
+                            </div>
+                            <div class="info-cadastro">
+                                <label class="label-form">Idade:*</label><label class="validation-error hide"
+                                    id="ageValidationError">Campo inválido. Por favor, revise os dados
+                                    inseridos.</label>
+                                <input type="text" name="idade" placeholder="Insira a idade do aluno" id="idade">
+                            </div>
+                            <div class="botoes-form">
+                                <div class="form-action-buttons">
+                                    <input type="submit" value="Cadastrar">
+                                </div>
+                                <div class="form-action-buttons">
+                                    <input type="reset" value="Limpar">
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+
             <table class="list" id="alunoList">
                 <thead>
                     <tr>
@@ -73,24 +88,18 @@
                         <th></th>
                     </tr>
                 </thead>
-
                 <tbody>
-
                 </tbody>
             </table>
-        </td>
-    </tr>
-</table>
+        </div>
+    </main>
+    <!-- FOOTER -->
+    <footer>
+        <section class="rodape">
+            <p>Maria Eduarda Krutzsch, Nicole Bauchspiess, Rodrigo Kapulka Franco</p>
+        </section>
+    </footer>
+    <script src="script.js"></script>
+</body>
 
-
-        <!-- FOOTER -->
-        <footer>
-            <section class="rodape">
-                <p>Maria Eduarda Krutzsch, Nicole Bauchspiess, Rodrigo Kapulka Franco</p>
-            </section>
-        </footer>
-        
-        <script src="script.js"></script>
-            
-    </body>
 </html>
