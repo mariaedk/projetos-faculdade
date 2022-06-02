@@ -1,22 +1,34 @@
 package arvoreBinariaABS;
 
-public class NoArvoreBST<T extends Comparable<T>> extends NoArvoreBinaria<T> {
+public class NoArvoreBST<T extends Comparable<T>> extends NoArvoreBinaria<T>
+{
 
-	public NoArvoreBST(T info) {
+	public NoArvoreBST(T info) 
+	{
 		super(info);
 	}
 
-	public void inserir(T valor) {
-		if (valor.compareTo(this.getInfo()) < 0) {
-			if (this.getEsq() == null) {
+	public void inserir(T valor) 
+	{
+		if (valor.compareTo(this.getInfo()) < 0) 
+		{
+			if (this.getEsq() == null) 
+			{
 				this.setEsq(new NoArvoreBST<T>(valor));
-			} else {
+			} 
+			else
+			{
 				((NoArvoreBST<T>) this.getEsq()).inserir(valor);
 			}
-		} else {
-			if (this.getDir() == null) {
+		} 
+		else 
+		{
+			if (this.getDir() == null) 
+			{
 				this.setDir(new NoArvoreBST<T>(valor));
-			} else {
+			}
+			else 
+			{
 				((NoArvoreBST<T>) this.getDir()).inserir(valor);
 			}
 		}
@@ -68,12 +80,40 @@ public class NoArvoreBST<T extends Comparable<T>> extends NoArvoreBinaria<T> {
 
 	public NoArvoreBST<T> localizarSucessor() 
 	{
-		NoArvoreBST<T> noSucessor = (NoArvoreBST<T>) this.getDir();
-		
-		while (noSucessor.getEsq() != null)
+		NoArvoreBST<T> sucessor = (NoArvoreBST<T>) this.getDir();
+		while (sucessor.getEsq() != null) 
 		{
-			noSucessor = (NoArvoreBST<T>) noSucessor.getEsq();
+			sucessor = (NoArvoreBST<T>) sucessor.getEsq();
 		}
-		return noSucessor;
+		return sucessor;
+	}
+	
+	public NoArvoreBST<T> localizarAntecessor()
+	{
+		NoArvoreBST<T> sucessor = (NoArvoreBST<T>) this.getEsq();
+		while (sucessor.getDir() != null) 
+		{
+			sucessor = (NoArvoreBST<T>) sucessor.getDir();
+		}
+		return sucessor;
+	}
+
+	public String imprimeEmOrdem() 
+	{
+		String msg = "";
+		
+		// se tiver elementos à esquerda
+		if (this.getEsq() != null) 
+		{
+			msg += ((NoArvoreBST<T>) this.getEsq()).imprimeEmOrdem();
+		}
+		
+		msg += this.getInfo() + ", ";
+		
+		if (this.getDir() != null)
+		{
+			msg += ((NoArvoreBST<T>) this.getDir()).imprimeEmOrdem();
+		} 
+		return msg;
 	}
 }

@@ -65,6 +65,7 @@ public class NoArvoreBinaria<T>
 		return retorno;
 	}
 	
+	// raiz, sae, sad
 	public String imprimePre() 
 	{
 		String msg = "<" + this.getInfo();
@@ -87,5 +88,29 @@ public class NoArvoreBinaria<T>
 			msg += "<>";
 		}
 		return msg + ">";
+	}
+	
+
+	public String imprimePre2() 
+	{
+		String arvore = this.info.toString();
+		if (this.esq != null) 
+		{
+			arvore += "<" + this.esq.imprimePre() + ">";
+		} 
+		else 
+		{
+			arvore += "<>";
+		}
+		if (this.dir != null)
+		{
+			arvore += "<" + this.dir.imprimePre() + ">";
+		}
+		else 
+		{
+			arvore += "<>";
+		}
+		return arvore;
+
 	}
 }
