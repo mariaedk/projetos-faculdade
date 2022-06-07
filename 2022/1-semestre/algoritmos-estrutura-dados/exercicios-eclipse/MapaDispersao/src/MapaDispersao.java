@@ -7,7 +7,9 @@ public class MapaDispersao<K, T>
 	
 	public MapaDispersao(int quantidade)
 	{
-		this.tabela =  (ListaEncadeada<K, T>[]) new Object[quantidade * 2];
+		// convertendo pai(object) em filho?
+		int tamanho = quantidade * 2;
+		tabela = new ListaEncadeada[tamanho];
 	}
 	
 	// calcular o valor de hash da chave (índice)
@@ -15,7 +17,8 @@ public class MapaDispersao<K, T>
 	{
 		// H(K) = K % M; K -> Chave, M -> Tamanho da tabela
 		// valor de hash da chave dividido pelo tamanho da tabela
-		return chave.hashCode() % this.tabela.length;
+		int tamanhoTabela = this.tabela.length;
+		return chave.hashCode() % tamanhoTabela;
 	}
 	
 	public boolean inserir(K chave, T info)
@@ -29,6 +32,12 @@ public class MapaDispersao<K, T>
 		// indice = 18000 % 32 = 16
 		// no vetor = posição 15. (16-1)
 		int indice = this.calcularHash(chave) - 1;
+		// Nao tem nada ali nessa posição
+		if (tabela[indice] == null)
+		{
+			this.tabela[indice] = new ListaEncadeada<K, T>();
+			
+		}
 		int posicaoObjeto = this.tabela[indice].buscarPorChave(chave);
 		// se retornar -1 significa que não foi adicionado ainda
 		// logo, pode adicionar o objeto com a chave
@@ -58,7 +67,13 @@ public class MapaDispersao<K, T>
 	public NoLista<K, T> buscar (K chave)
 	{
 		int indice = this.calcularHash(chave) - 1;
-		return this.tabela[indice].pegarPorChave(chave);
+		// se a posição não estiver vazia
+		if (this.tabela[indice] != null)
+		{
+			return this.tabela[indice].pegarPorChave(chave);
+		}
+		// se estiver vazia, não tem o que buscar
+		return null;
 	}
 	
 	// retorna qtd atual de elementos inseridos no mapa
@@ -68,8 +83,13 @@ public class MapaDispersao<K, T>
 		// para cada posição do vetor, pegar a qtd de elementos da lista encadeada
 		for (int i = 0; i < this.tabela.length; i++)
 		{
-			qtdElementosTabela += this.tabela[i].getTamanho();
+			// se existe algum dado, verifica
+			if (this.tabela[i] != null)
+			{
+				qtdElementosTabela += this.tabela[i].getTamanho();
+			}
 		}
 		return qtdElementosTabela;
 	}
+	
 }

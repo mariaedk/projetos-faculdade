@@ -24,7 +24,7 @@ public class ListaEncadeada<K, T>
 		String resultado = "[";
 
 		while (p != null) {
-			resultado += p.getInfo() + ", ";
+			resultado += p.getInfo() + ", " + p.getChave() + ", ";
 			p = p.getProximo();
 		}
 
