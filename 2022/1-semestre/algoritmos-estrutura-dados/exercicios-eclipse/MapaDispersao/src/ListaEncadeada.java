@@ -58,6 +58,23 @@ public class ListaEncadeada<K, T>
 		}
 		return -1;
 	}
+	
+	public NoLista<K, T> pegarPorChave(K chave) 
+	{
+		NoLista<K, T> p = primeiro;
+		// enquanto nao chegar no fim da lista
+		while (p != null) {
+			// se a chave do objeto atual é a chave que procuro
+			if (p.getChave().equals(chave)) {
+				// retorna o objeto
+				return p;
+			}
+			// se n pega o proximo
+			p = p.getProximo();
+		}
+		// se não achou nenhum objeto, retorna null
+		return null;
+	}
 
 	public void retirar(T valor) {
 		NoLista<K, T> anterior = null;
@@ -80,24 +97,38 @@ public class ListaEncadeada<K, T>
 			}
 		}
 	}
+	
+	public NoLista<K, T> retirarPorChave(K chave) 
+	{
+		NoLista<K, T> anterior = null;
+		NoLista<K, T> p = primeiro;
 
-	public Lista<T> copiar() {
-		ListaEncadeada<K, T> novaLista = new ListaEncadeada<>();
-		NoLista<K, T> no = primeiro;
-
-		while (no != null) {
-			novaLista.inserir(no.getInfo());
-			no = no.getProximo();
+		while (p != null && !p.getChave().equals(chave))
+		{
+			anterior = p;
+			p = p.getProximo();
 		}
 
-		return novaLista;
+		if (p != null) 
+		{ 
+			if (anterior == null) 
+			{
+				primeiro = p.getProximo();
+			} 
+			else
+			{
+				anterior.setProximo(p.getProximo());
+			}
+			qtdElem--;
+			if (ultimo == p) 
+			{
+				ultimo = anterior;
+			}
+		}
+		// retorna objeto removido
+		return p;
 	}
 
-	public void concatenar(Lista<T> outra) {
-		for (int i = 0; i < outra.getTamanho(); i++) {
-			this.inserir(outra.pegar(i));
-		}
-	}
 
 	public int getTamanho() {
 		return qtdElem;
@@ -106,37 +137,16 @@ public class ListaEncadeada<K, T>
 	public boolean estaVazia() {
 		return (primeiro == null);
 	}
-
-	 public Lista<T> dividir() {  
-		NoLista<K, T> no = primeiro;
-        ListaEncadeada<K, T> listaNova = new ListaEncadeada<>();
-        int metade = this.getTamanho() / 2;
-        int contador = 1;
-        NoLista<K, T> novoUltimo = null;
-       
-        while(no != null) {
-            if(contador > metade) {
-                listaNova.inserir(no.getInfo());
-            }
-            else {
-            	novoUltimo = no;
-            }
-            contador++;
-            no = no.getProximo();
-        }
-        ultimo = novoUltimo;
-        ultimo.setProximo(null);
-        qtdElem = metade;
-        return listaNova;
-    }
 	
-	public T pegar(int pos) {
+	public T pegar(int pos)
+	{
 		if (pos < 0 || pos >= this.qtdElem) {
 			throw new IndexOutOfBoundsException("Posicao=" + pos + "; Tamanho=" + qtdElem);
 		}
 		NoLista<K, T> no = primeiro;
 
-		for (int i = 0; i < pos; i++) {
+		for (int i = 0; i < pos; i++) 
+		{
 			no = no.getProximo();
 		}
 

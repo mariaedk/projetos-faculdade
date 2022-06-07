@@ -39,4 +39,37 @@ public class MapaDispersao<K, T>
 		}
 		return false;
 	}
+	
+	// remover o objeto pela chave
+	public NoLista<K, T> remover (K chave)
+	{
+		// buscar o objeto para garantir que ele realmente existe
+		int indice = this.calcularHash(chave) - 1;
+		int posicaoObjeto = this.tabela[indice].buscarPorChave(chave);
+		// se retornar -1 significa que não existe na tabela
+		if (posicaoObjeto == -1)
+		{
+			return null;
+		}
+		return this.tabela[indice].retirarPorChave(chave);
+	}
+	
+	// procura no mapa o objeto por chave
+	public NoLista<K, T> buscar (K chave)
+	{
+		int indice = this.calcularHash(chave) - 1;
+		return this.tabela[indice].pegarPorChave(chave);
+	}
+	
+	// retorna qtd atual de elementos inseridos no mapa
+	public int quantosElementos()
+	{
+		int qtdElementosTabela = 0;
+		// para cada posição do vetor, pegar a qtd de elementos da lista encadeada
+		for (int i = 0; i < this.tabela.length; i++)
+		{
+			qtdElementosTabela += this.tabela[i].getTamanho();
+		}
+		return qtdElementosTabela;
+	}
 }
