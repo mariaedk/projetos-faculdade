@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Veiculo implements Comparable<Veiculo> 
 {
 	private String placa;
@@ -74,4 +76,18 @@ public class Veiculo implements Comparable<Veiculo>
 		}
 	}
 
+	@Override
+	public int hashCode() 
+	{
+		int n = this.getPlaca().length() - 1;
+		int h = 0;
+		
+		for (int c = n; c > -1; c--)
+		{
+			int asciiCode = (int) this.placa.charAt(c);
+			h = (int) (h + (asciiCode * (Math.pow(31, c))));
+		}
+		
+		return h;
+	}
 }

@@ -7,7 +7,6 @@ public class MapaDispersao<K, T>
 	
 	public MapaDispersao(int quantidade)
 	{
-		// convertendo pai(object) em filho?
 		int tamanho = quantidade * 2;
 		tabela = new ListaEncadeada[tamanho];
 	}
@@ -17,8 +16,7 @@ public class MapaDispersao<K, T>
 	{
 		// H(K) = K % M; K -> Chave, M -> Tamanho da tabela
 		// valor de hash da chave dividido pelo tamanho da tabela
-		int tamanhoTabela = this.tabela.length;
-		return chave.hashCode() % tamanhoTabela;
+		return chave.hashCode() % this.tabela.length;
 	}
 	
 	public boolean inserir(K chave, T info)
@@ -35,9 +33,10 @@ public class MapaDispersao<K, T>
 		// Nao tem nada ali nessa posição
 		if (tabela[indice] == null)
 		{
+			// então deve-se criar uma nova lista nesta posição
 			this.tabela[indice] = new ListaEncadeada<K, T>();
-			
 		}
+		
 		int posicaoObjeto = this.tabela[indice].buscarPorChave(chave);
 		// se retornar -1 significa que não foi adicionado ainda
 		// logo, pode adicionar o objeto com a chave
@@ -46,6 +45,7 @@ public class MapaDispersao<K, T>
 			this.tabela[indice].inserir(chave, info);
 			return true;
 		}
+		// se retornar um valor diferente de -1 significa que ja tem um objeto sob a mesma chave, logo nao pode inserir
 		return false;
 	}
 	
@@ -76,6 +76,7 @@ public class MapaDispersao<K, T>
 		return null;
 	}
 	
+	// REFAZER
 	// retorna qtd atual de elementos inseridos no mapa
 	public int quantosElementos()
 	{
