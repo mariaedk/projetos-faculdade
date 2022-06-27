@@ -1,25 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
+
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
-})
-export class NavbarComponent implements OnInit {
 
-  constructor(private cookie: CookieService) {}
+})
+
+export class NavbarComponent implements OnInit {
+  constructor() { }
 
   user: string = '';
+  isLogged: boolean = false;
 
-  getCookie()
-  {
-    this.user = this.cookie.get('name');
+  ngOnInit(): void {
+    this.getSessionStorage();
+    if (this.user != '') {
+      this.isLogged = true;
+    }
   }
 
-  ngOnInit(): void
-  {
-    this.getCookie();
+  getSessionStorage() {
+    if (sessionStorage.getItem('usuario')! != null) {
+      this.user = JSON.parse(sessionStorage.getItem('usuario')!).usuario
+    }
+  }
+
+  logout() {
+    this.isLogged = false;
+    sessionStorage.removeItem('usuario');
+    sessionStorage.removeItem('senha');
   }
 
 }
+
+

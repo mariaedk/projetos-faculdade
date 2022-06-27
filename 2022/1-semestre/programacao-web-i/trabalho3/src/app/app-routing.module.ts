@@ -1,3 +1,5 @@
+import { UsuarioNaoAutenticadoGuard } from './services/guards/usuario-nao-autenticado.guard';
+import { HistoriaComponent } from './components/historia/historia.component';
 import { SuporteComponent } from './components/suporte/suporte.component';
 import { CadastroAlunoComponent } from './components/aluno/cadastro-aluno/cadastro-aluno.component';
 import { LoginComponent } from './components/usuario/login/login.component';
@@ -13,9 +15,11 @@ const routes: Routes = [
 
     { path: 'login', component: LoginComponent },
 
-    { path: 'cadastro-aluno', component: CadastroAlunoComponent },
+    { path: 'cadastro-aluno', component: CadastroAlunoComponent, canActivate: [UsuarioNaoAutenticadoGuard] },
 
     { path: 'suporte', component: SuporteComponent },
+
+    { path: 'historia', component: HistoriaComponent },
 
   ];
 

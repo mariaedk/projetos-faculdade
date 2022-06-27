@@ -1,1 +1,219 @@
-<p>cadastro-aluno works!</p>
+<div class="color-page pt-5 pb-5">
+  <div class="container">
+    <div *ngIf="isCadastroValid">
+      <div class="alert alert-success" role="alert">
+        <b>Cadastro efetuado com sucesso!</b>
+      </div>
+    </div>
+    <div *ngIf="editSucedido">
+      <div class="alert alert-success" role="alert">
+        <b>Modificações realizadas com sucesso!</b>
+      </div>
+    </div>
+  </div>
+  <div class="container-pagina">
+    <div class="card" id="cadastro-pagina">
+      <div class="card-body">
+        <div class="titulo-destaque">
+          <h1>Cadastro de Alunos</h1>
+        </div>
+        <form class="mt-4">
+          <div [formGroup]="formNome" class="form-group">
+            <label for="nome">* Nome:</label>
+            <input type="text" class="form-control" id="nomeCadastroAluno" formControlName="nomeCadastroAluno"
+              placeholder="Insira o nome do aluno" [(ngModel)]="nomeModel" />
+            <span class="text-danger" *ngIf="
+                formNome.get('nomeCadastroAluno').errors &&
+                (formNome.get('nomeCadastroAluno').hasError('required') ||
+                  formNome.get('nomeCadastroAluno').hasError('pattern')) &&
+                formNome.get('nomeCadastroAluno').dirty
+              ">Nome inválido. Precisa ter no mínimo 2 caracteres.</span>
+          </div>
+
+          <div [formGroup]="formCodigo" class="form-group">
+            <label for="codigo">* Código:</label>
+            <input type="number" class="form-control" id="codigoAluno" formControlName="codigo"
+              placeholder="código do aluno" [(ngModel)]="codigoModel" />
+            <span class="text-danger" *ngIf="
+                formCodigo.get('codigo').errors &&
+                (formCodigo.get('codigo').hasError('required') ||
+                  formCodigo.get('codigo').hasError('pattern')) &&
+                formCodigo.get('codigo').dirty
+              ">Código inválido. Precisa de no mínimo 6 digitos.</span>
+            <span class="text-danger" *ngIf="this.checkCodeInLocalStorage() && formCodigo.get('codigo').dirty">Código já
+              cadastrado!</span>
+          </div>
+
+          <!-- validateAge() para verificar se o número está dentro do intervalo de 1 a 99 -->
+          <div [formGroup]="formIdade" class="form-group">
+            <label for="idade">* Idade:</label>
+            <input type="number" class="form-control" id="IdadeAluno" formControlName="idade"
+              placeholder="Idade do aluno" maxlength="2" [(ngModel)]="idadeModel" />
+            <span class="text-danger" *ngIf="
+                formIdade.get('idade').errors &&
+                (formIdade.get('idade').hasError('required') ||
+                  formIdade.get('idade').hasError('pattern')) &&
+                formIdade.get('idade').dirty
+              ">Idade inválida. Valores entre 1 e 99.</span>
+          </div>
+
+          <form [formGroup]="this.formGenero" class="form-group">
+            <label for="gender">*Gênero: </label>
+            <br />
+
+            <div class="form-check form-check-inline">
+              <input class="input-style" id="male" type="radio" value="masculino" name="genero" formControlName="genero"
+                [(ngModel)]="generoModel" />
+              <label for="male" class="form-check-label">Masculino</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <input class="input-style" id="female" type="radio" value="feminino" name="genero"
+                formControlName="genero" [(ngModel)]="generoModel" />
+              <label for="female" class="form-check-label">Feminino</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <input class="input-style" id="outros" type="radio" value="outros" name="genero" formControlName="genero"
+                [(ngModel)]="generoModel" />
+              <label for="outros" class="form-check-label">Outros</label>
+            </div>
+            <br>
+            <span class="text-danger" *ngIf="this.formGenero.get('genero').errors">Selecione uma opção!</span>
+          </form>
+
+          <div [formGroup]="formEscolaridade" class="form-group">
+            <label for="escolaridade">* Escolaridade</label>
+            <select name="escolaridade" formControlName="escolaridade" id="escolaridade" [value]="1"
+              class="form-control col-md-4" [(ngModel)]="escolaridadeModel">
+              <option disabled selected value="">--Selecione--</option>
+              <option value="Ensino Fundamental I">Ensino Fundamental I</option>
+              <option value="Ensino Fundamental II">
+                Ensino Fundamental II
+              </option>
+              <option value="Ensino Medio">Ensino Médio</option>
+              <option value="Ensino Superior">Ensino Superior</option>
+            </select>
+            <span class="text-danger" *ngIf="this.formEscolaridade.get('escolaridade').errors">Selecione uma
+              opção!</span>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="reset" class="btn btn-custom-no-highlight" (click)="resetButton()">
+              Limpar
+            </button>
+            <button *ngIf="!editando" type="submit" class="btn btn-custom-hightlight ml-3" [disabled]="!this.validate()"
+              (click)="saveInLocalStorage()">
+              Cadastrar
+            </button>
+            <button *ngIf="editando" type="submit" class="btn btn-custom-hightlight ml-3" [disabled]="!this.validate()"
+              (click)="editAluno()">
+              Editar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- FIM FORMULARIO CADASTRO -->
+
+    <!-- MENSAGENS -->
+
+    <div class="mt-5" *ngIf="sucessoDelete">
+      <div class="alert alert-success" role="alert">
+        <b>Aluno deletado com sucesso!</b>
+      </div>
+    </div>
+
+    <div class="mt-5" *ngIf="deletando">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Deletar o aluno {{ alunoDeletando.nome }}</strong>
+        <p>Deseja mesmo realizar essa operação? Ela não pode ser desfeita.</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="resetButton()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="d-flex justify-content-start">
+          <button type="button" class="btn btn-outline-danger" (click)="resetButton()">
+            Não
+          </button>
+          <button type="button" class="btn btn-danger" (click)="deletarAluno()">
+            Sim
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- INICIO TABELA -->
+    <div class="tabela mt-5 mb-5">
+      <div class="example-header">
+        <mat-form-field>
+          <input class="white-input" [(ngModel)]="filtragem" matInput (keyup)="applyFilter(filtragem)"
+            placeholder="Pesquisar aluno" />
+        </mat-form-field>
+      </div>
+
+      <div class="example-container mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" matSort>
+          <!-- ID Column -->
+          <ng-container matColumnDef="codigo">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              Código
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.codigo }} </mat-cell>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="nome">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              Nome
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.nome }} </mat-cell>
+          </ng-container>
+
+          <!-- Idade Column -->
+          <ng-container matColumnDef="idade">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              Idade
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.idade }} </mat-cell>
+          </ng-container>
+
+          <!-- Genero Column -->
+          <ng-container matColumnDef="genero">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              Gênero
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.genero }} </mat-cell>
+          </ng-container>
+
+          <!-- Escolaridade Column -->
+          <ng-container matColumnDef="escolaridade">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              Escolaridade
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.escolaridade }} </mat-cell>
+          </ng-container>
+
+          <!-- Icons Column -->
+          <ng-container matColumnDef="Ações">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              Ações
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <a class="link-edit" (click)="showAlunoInInputs(row)"><i style="margin-right: 10px; margin-left: 10px"
+                  class="fa-solid fa-pen-to-square"></i></a>
+              <a class="link-delete" (click)="confirmIfDeleteAluno(row)"><i
+                  style="margin-right: 10px; margin-left: 10px" class="fa-solid fa-trash"></i></a>
+            </mat-cell>
+          </ng-container>
+
+          <!-- display colunas -->
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns"> </mat-row>
+        </mat-table>
+
+        <!-- paginação -->
+        <mat-paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

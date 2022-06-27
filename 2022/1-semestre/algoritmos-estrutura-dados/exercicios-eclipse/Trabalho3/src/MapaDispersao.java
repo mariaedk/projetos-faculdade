@@ -10,11 +10,6 @@ public class MapaDispersao<K, T>
 	{
 		tabela = new ListaEncadeada[quantidade * 2];
 	}
-	
-	private int getTamanhoMapa()
-	{
-		return tamanhoMapa;
-	}
 
 	private int calcularHash(K chave)
 	{
@@ -24,22 +19,23 @@ public class MapaDispersao<K, T>
 	public boolean inserir(K chave, T info)
 	{
 		int indice = this.calcularHash(chave) - 1;
-
-		if (tabela[indice] == null)
+		if (indice >= 0)
 		{
-			this.tabela[indice] = new ListaEncadeada<K, T>();
-		}
-		
-		int posicaoObjeto = this.tabela[indice].buscarPorChave(chave);
-
-		if (posicaoObjeto == -1)
-		{
-			this.tabela[indice].inserir(chave, info);
-			this.tamanhoMapa++;
+			if (tabela[indice] == null)
+			{
+				this.tabela[indice] = new ListaEncadeada<K, T>();
+			}
 			
-			return true;
+			int posicaoObjeto = this.tabela[indice].buscarPorChave(chave);
+
+			if (posicaoObjeto == -1)
+			{
+				this.tabela[indice].inserir(chave, info);
+				this.tamanhoMapa++;
+				
+				return true;
+			}
 		}
-		
 		return false;
 	}
 	
@@ -47,32 +43,35 @@ public class MapaDispersao<K, T>
 	{
 		int indice = this.calcularHash(chave) - 1;
 		
-		int posicaoObjeto = this.tabela[indice].buscarPorChave(chave);
-		
-		if (posicaoObjeto == -1)
+		if (indice >= 0)
 		{
-			return null;
+			int posicaoObjeto = this.tabela[indice].buscarPorChave(chave);
+			
+			if (posicaoObjeto != -1)
+			{
+				this.tamanhoMapa--;
+				return this.tabela[indice].retirarPorChave(chave);
+			}
 		}
-		
-		this.tamanhoMapa--;
-		
-		return this.tabela[indice].retirarPorChave(chave);
+		return null;
 	}
 	
 	public NoLista<K, T> buscar (K chave)
 	{
 		int indice = this.calcularHash(chave) - 1;
 		
-		if (this.tabela[indice] != null)
+		if (indice >= 0)
 		{
-			return this.tabela[indice].pegarPorChave(chave);
+			if (this.tabela[indice] != null)
+			{
+				return this.tabela[indice].pegarPorChave(chave);
+			}
 		}
-		
 		return null;
 	}
 
 	public int quantosElementos()
 	{
-		return this.getTamanhoMapa();
+		return this.tamanhoMapa;
 	}
 }

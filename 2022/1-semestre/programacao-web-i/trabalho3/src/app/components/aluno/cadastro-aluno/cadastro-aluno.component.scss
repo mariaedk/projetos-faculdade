@@ -1,0 +1,209 @@
+// AJUSTES DE POSIÇÃO E TAMANHO GERAIS
+
+.color-page
+{
+  background-color: #FFF3E5;
+}
+
+.container-pagina
+{
+  margin: auto;
+  width: 50%;
+  min-height: 80vh;
+}
+
+.card-center{
+  margin: auto;
+  width: 50%;
+}
+
+.card
+{
+  width: 100%;
+  background-color: #FFE6CC;
+}
+
+label, input
+{
+  font-size: 18px;
+}
+
+// FIM AJUSTES DE POSIÇÃO E TAMANHO GERAIS
+
+// *--*--*--*=-*--*--*--*--*
+
+// BOTÕES
+
+.btn-custom-no-highlight
+{
+  border-color: #10739E;
+  font-weight: bold;
+}
+
+.btn-custom-no-highlight:hover
+{
+  background-color: #B1DDF0;
+}
+
+.btn-custom-hightlight
+{
+  border-color: #10739E;
+  font-weight: bold;
+  background-color: #B1DDF0;
+}
+
+.btn-custom-hightlight:hover
+{
+  background-color: #9dd7f0;
+}
+
+// FIM BOTÕES
+
+// *--*--*--*=-*--*--*--*--*
+
+// ESTILO LINK
+.link-login
+{
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+// ESTILOS DO TÍTULO
+
+//* --- * -- * -- * -- * -- * -- *
+
+h1 {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  font-weight: 300;
+  font-size: 40px;
+  color: #080808;
+  -webkit-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+}
+
+h1 span {
+  display: block;
+  font-size: 0.5em;
+  line-height: 1.3;
+}
+h1 em {
+  font-style: normal;
+  font-weight: 600;
+}
+
+.titulo-destaque h1 {
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5em;
+  padding-bottom: 15px;
+  position: relative;
+}
+
+.titulo-destaque h1:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  height: 1px;
+  width: 95%;
+  max-width: 255px;
+  background-color: #333;
+}
+
+
+//* --- * -- * -- * -- * -- * -- *
+
+
+// TABELA
+.tabela
+{
+  font-size: 18px;
+}
+
+.link-edit
+{
+  color: rgb(48, 133, 230);
+}
+
+.link-edit:hover
+{
+  transition: .5s;
+  color: rgb(32, 89, 155);
+  cursor: pointer;
+}
+
+.link-delete
+{
+  color: rgb(204, 9, 9);
+}
+
+.link-delete:hover
+{
+  transition: .5s;
+  color: rgb(131, 4, 4);
+  cursor: pointer;
+}
+
+//* --- * -- * -- * -- * -- * -- *
+
+
+// ESTILOS DOS LABELS
+.white-input
+{
+  background-color: #FFF3E5;
+  color: black;
+}
+
+.white-input:focus
+{
+  background-color: #FFF3E5;
+  color: black;
+}
+
+.white-input::placeholder
+{
+  background-color: #FFF3E5;
+  color: black;
+}
+
+input
+{
+  background-color: #5C1A00;
+  color: white;
+}
+
+input:focus
+{
+  background-color: #5C1A00;
+  color: white;
+}
+
+input::placeholder
+{
+  color: white;
+}
+
+
+// ESTILO BOTAO DE DELETAR
+.btn-outline-danger
+{
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 900px)
+{
+
+  .container-pagina{
+    width: 85%;
+  }
+
+  .card
+  {
+    margin-top: 50px;
+    width: 100%;
+  }
+}

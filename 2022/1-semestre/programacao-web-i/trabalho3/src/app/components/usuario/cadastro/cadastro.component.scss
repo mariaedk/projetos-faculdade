@@ -10,6 +10,7 @@
 {
   margin: auto;
   width: 80%;
+  min-height: 80vh;
 }
 
 .flex-container
@@ -74,6 +75,13 @@ label, input
 // FIM BOTÕES
 
 // *--*--*--*=-*--*--*--*--*
+
+// ESTILO LINK
+.link-login
+{
+  font-weight: bold;
+  text-decoration: underline;
+}
 
 // ESTILOS DO TÍTULO
 
@@ -141,4 +149,46 @@ input:focus
 input::placeholder
 {
   color: white;
+}
+
+@media screen and (max-width: 1500px)
+{
+  .img-cadastro
+  {
+    background-image: url('../../../../assets/_img/tela-cadastro/img-cadastro-350.png');
+    width: 350px;
+    height: 439px;
+  }
+}
+
+
+@media screen and (max-width: 900px)
+{
+  .img-cadastro
+  {
+    background-image: url('../../../../assets/_img/tela-cadastro/img-cadastro-200.png');
+    width: 200px;
+    height: 251px;
+  }
+
+  .container-img
+  {
+    width: 100%;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .flex-container
+  {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card
+  {
+    margin-top: 50px;
+    width: 100%;
+  }
 }

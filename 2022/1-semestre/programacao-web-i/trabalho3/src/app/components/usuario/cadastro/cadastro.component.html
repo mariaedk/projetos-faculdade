@@ -1,5 +1,10 @@
 <div class="color-page pt-5 pb-5">
   <div class="container-pagina">
+    <div *ngIf="sucessoCadastro">
+      <div class="alert alert-success" role="alert">
+        <b>Cadastro efetuado com sucesso!</b>
+      </div>
+    </div>
     <div class="flex-container">
       <div class="container-img">
         <div class="img-cadastro"></div>
@@ -9,46 +14,55 @@
           <div class="titulo-destaque">
             <h1>Cadastro</h1>
           </div>
-          <form (ngSubmit)="saveInLocalStorageAndSessionStorage()" class="mt-4">
+          <form class="mt-4">
             <div [formGroup]="formNome" class="form-group">
               <label for="nome">* Nome:</label>
-              <input type="text"
-                     class="form-control"
-                     id="nomePessoa"
-                     formControlName="nome"
-                     placeholder="Insira seu nome">
+              <input type="text" class="form-control" id="nomeALuno" formControlName="nome"
+                placeholder="Insira o seu nome">
+              <span class="text-danger" *ngIf="formNome.get('nome').errors && (formNome.get('nome').hasError('required') || formNome.get('nome').hasError('pattern'))
+                && (formNome.get('nome').touched)">Nome inválido. Precisa ter no mínimo 2 caracteres.</span>
             </div>
+
             <div [formGroup]="formEmail" class="form-group">
               <label for="email">* Email:</label>
-              <input type="email"
-                     class="form-control"
-                     id="emailPessoa"
-                     aria-describedby="emailHelp"
-                     formControlName="email"
-                     placeholder="email@exemplo.com">
+              <input type="email" class="form-control" id="emailPessoa" aria-describedby="emailHelp"
+                formControlName="email" placeholder="email@exemplo.com">
+
+              <span class="text-danger" *ngIf="formEmail.get('email').errors && (formEmail.get('email').hasError('required') ||
+    formEmail.get('email').hasError('email')) && (formEmail.get('email').touched)">Email inválido</span>
+
             </div>
+
             <div [formGroup]="formUsuario" class="form-group">
               <label for="usuario">* Usuário:</label>
-              <input type="text"
-                     class="form-control"
-                     id="usuarioPessoa"
-                     formControlName="usuario"
-                     [(ngModel)]="user"
-                     placeholder="nomeUsuario">
-              <small id="ajudaUsuario" class="form-text text-muted">O seu nome de usuário deve conter no mínimo 5 caracteres.</small>
+              <input type="text" class="form-control" id="usuarioPessoa" formControlName="usuario"
+                placeholder="nomeUsuario">
+              <small id="ajudaUsuario" class="form-text text-muted">O seu nome de usuário deve conter no mínimo 5
+                caracteres.</small>
+
+              <span class="text-danger"
+                *ngIf="formUsuario.get('usuario').errors && (formUsuario.get('usuario').hasError('required')||formUsuario.get('usuario').hasError('minlength')) && (formUsuario.get('usuario').touched)">Usuário
+                inválido</span>
+
             </div>
+
             <div [formGroup]="formSenha" class="form-group">
               <label for="senha">* Senha:</label>
-              <input type="password"
-                     class="form-control"
-                     id="senhaPessoa"
-                     formControlName="senha"
-                     placeholder="Crie uma senha">
-              <small id="ajudaSenha" class="form-text text-muted">A sua senha deve conter no mínimo 8 caracteres.</small>
+              <input type="password" class="form-control" id="senhaPessoa" formControlName="senha"
+                placeholder="Crie uma senha">
+              <small id="ajudaSenha" class="form-text text-muted">A sua senha deve conter no mínimo 8
+                caracteres.</small>
+
+              <span class="text-danger"
+                *ngIf="formSenha.get('senha').errors &&
+                  (formSenha.get('senha').hasError('required')||formSenha.get('senha').hasError('minlength')) && (formSenha.get('senha').touched)">Senha
+                inválida</span>
+
             </div>
             <div class="d-flex justify-content-end">
               <button type="reset" class="btn btn-custom-no-highlight">Cancelar</button>
-              <button (click)="setarCookie()" type="submit" class="btn btn-custom-hightlight ml-3">Cadastrar</button>
+              <button (click)="cadastrar()" type="submit" class="btn btn-custom-hightlight ml-3"
+                [disabled]="!this.validate()">Cadastrar</button>
             </div>
           </form>
         </div>

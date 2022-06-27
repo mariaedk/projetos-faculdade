@@ -1,4 +1,18 @@
-.bg-custom
-{
+.logo {
+  display: flex;
+  float: left;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-logo {
+  background-image: url('../../../../assets/_img/nav-bar/logo.png');
+  width: 50px;
+  height: 50px;
+  float: left;
+  margin-right: 10px;
+}
+
+.bg-custom {
   background-color: #5C1A00;
 }

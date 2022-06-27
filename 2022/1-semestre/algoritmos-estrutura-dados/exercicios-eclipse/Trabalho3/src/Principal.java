@@ -6,94 +6,89 @@ public class Principal
 	public static void main(String[] args) 
 	{
 		
+		MapaDispersao<String, Veiculo> mp = new MapaDispersao(2000);
+		
+		Veiculo v = new Veiculo();
+		
+		v.setPlaca("AAA-0123");
+		v.setModelo("Hyundai Creta");
+		v.setAno(2017);
+		v.setProprietario("João da Silva");
+		
+		System.out.println("Inserindo carro placa \"AAA-0123\": " + mp.inserir(v.getPlaca(), v));
+		
+		System.out.println("Quantidade de elementos no mapa: " + mp.quantosElementos());
+		
+		System.out.println("--------------");
+		
 		Veiculo v1 = new Veiculo();
-		Pessoa p1 = new Pessoa();
 		
-		p1.setNome("João da Silva");
-		p1.setEndereço("Rua azeitona");
-		p1.setSexo("Outros");
-		p1.setAnoNascimento(1995);
+		v1.setPlaca("ABC-1111");
+		v1.setModelo("Corsa");
+		v1.setAno(2008);
+		v1.setProprietario("Maria Joaquina");
 		
-		v1.setPlaca("AAA-0123");
-		v1.setModelo("Hyundai Creta");
-		v1.setAno(2017);
-		v1.setProprietario(p1.getNome());
+		System.out.println("Inserindo carro placa \"ABC-1111\": " + mp.inserir(v1.getPlaca(), v1));
 		
-		// Chave = classe pessoa
-		// Objeto = classe veiculo
-		MapaDispersao<Pessoa,Veiculo> mp = new MapaDispersao<Pessoa, Veiculo>(2000);
+		System.out.println("Quantidade de elementos no mapa: " + mp.quantosElementos());
 		
-		System.out.println("Inserir p1 e v1: " + mp.inserir(p1, v1));
-		
+		System.out.println("--------------");
 		
 		Veiculo v2 = new Veiculo();
-		Pessoa p2 = new Pessoa();
 		
-		p2.setNome("Mariazinha K");
-		p2.setEndereço("Rua Ary Taborda Ribas");
-		p2.setSexo("Feminino");
-		p2.setAnoNascimento(2002);
+		v2.setPlaca("BCD-1345");
+		v2.setModelo("Fusca");
+		v2.setAno(1980);
+		v2.setProprietario("Ana Maria");
 		
-		v2.setPlaca("DQD-7853");
-		v2.setModelo("HB20");
-		v2.setAno(2016);
-		v2.setProprietario(p2.getNome());
+		System.out.println("Inserindo carro placa \"BCD-1345\": " +mp.inserir(v2.getPlaca(), v2));
 		
-		System.out.println("Inserir p2 e v2: " + mp.inserir(p2, v2));
+		System.out.println("Quantidade de elementos no mapa: " + mp.quantosElementos());
+		
+		System.out.println("--------------");
 		
 		Veiculo v3 = new Veiculo();
 		
-		v3.setPlaca("ABC-3456");
-		v3.setModelo("CORSA");
-		v3.setAno(2008);
-		v3.setProprietario(p2.getNome());
+		v3.setPlaca("BCD-1345");
+		v3.setModelo("HB20");
+		v3.setAno(2016);
+		v3.setProprietario("Ângela");
 		
-		System.out.println("Inserir p2 e v3 (p2 ja foi inserido = retornar false): " + mp.inserir(p2, v3));
+		System.out.println("Inserindo carro placa \"BCD-1345\" (Já existente no mapa): " +mp.inserir(v3.getPlaca(), v3));
+		
+		System.out.println("Quantidade de elementos no mapa: " + mp.quantosElementos());
+		
+		System.out.println("--------------");
 		
 		Veiculo v4 = new Veiculo();
-		Pessoa p3 = new Pessoa();
 		
-		p3.setNome("Carolina Souza");
-		p3.setEndereço("Rua Pão");
-		p3.setSexo("Feminino");
-		p3.setAnoNascimento(1999);
-		
-		v4.setPlaca("UIO-3291");
+		v4.setPlaca("XYZ-4567");
 		v4.setModelo("Ranger");
 		v4.setAno(2020);
-		v4.setProprietario(p3.getNome());
-		System.out.println("Inserir p3 e v4: " + mp.inserir(p3, v4));
+		v4.setProprietario("Maria Eduarda");
 		
-		Veiculo v5 = new Veiculo();
-		Pessoa p4 = new Pessoa();
+		System.out.println("Removendo carro placa \"AAA-0123\"");
+		System.out.println("Objeto retornado: " + mp.remover(v.getPlaca()).getInfo());
+		System.out.println("Quantidade de elementos no mapa: " + mp.quantosElementos());
 		
-		p4.setNome("Carlos Silveira");
-		p4.setEndereço("Rua Pizza");
-		p4.setSexo("Masculino");
-		p4.setAnoNascimento(1987);
+		System.out.println("--------------");
 		
-		v5.setPlaca("KLS-3921");
-		v5.setModelo("Fox");
-		v5.setAno(2020);
-		v5.setProprietario(p4.getNome());
+		System.out.println("Removendo carro placa \"XYZ-4567\" (Não existente no mapa)");
+		System.out.println("Objeto retornado: " + mp.remover(v4.getPlaca()));
+		System.out.println("Quantidade de elementos no mapa: " + mp.quantosElementos());
 		
-		// sem uso
-		Pessoa p5 = new Pessoa();
-		p5.setNome("Ana Joaquina");
-		p5.setEndereço("Rua Garrafa");
-		p5.setSexo("Feminino");
-		p5.setAnoNascimento(1965);
+		System.out.println("--------------");
 		
-		System.out.println("Inserir p4 e v5: " + mp.inserir(p4, v5));
+		System.out.println("Buscando carro placa \"ABC-1111\"");
+		System.out.println("Objeto retornado: " + mp.buscar(v1.getPlaca()).getInfo());
 		
-		System.out.println("Quantos elementos no mapa agora: " + mp.quantosElementos());
+		System.out.println("--------------");
 		
-		System.out.println("Objeto a remover: " + mp.remover(p4));
-		System.out.println("Deve retornar null: (tentando remover objeto q n existe mais) " + mp.remover(p4));
+		System.out.println("Buscando carro placa \"XYZ-4567\" (Não existente no mapa)");
+		System.out.println("Objeto retornado: " + mp.buscar(v4.getPlaca()));
 		
-		System.out.println("Objeto buscado: "+ mp.buscar(p2));
-		System.out.println("Objeto q não existe no mapa: "+ mp.buscar(p5));
-				
-		System.out.println("Quantos elementos no mapa agora: " + mp.quantosElementos());
+		System.out.println("--------------");
+		
+		
 	}
 }
