@@ -204,12 +204,11 @@ public class AlgoritmoExclusao {
 
     private int gerarTempoAleatorioProcessamento() {
         // de 1 a 10 gere número aleatório e adicione 5
-        return (new Random().nextInt(5) + 5) * 1000;
+        return (new Random().nextInt(11) + 5) * 1000;
     }
 
     private int gerarTempoAleatorioConsumirRecurso() {
-        // de 1 a 10 gere número aleatório e adicione 5
-        return (new Random().nextInt(5) + 5) * 1000;
+        return (new Random().nextInt(16) + 10) * 1000;
     }
 
 }
