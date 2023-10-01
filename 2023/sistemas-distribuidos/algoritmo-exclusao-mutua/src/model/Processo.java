@@ -42,8 +42,8 @@ public class Processo {
         return this.isOcupado;
     }
 
-    public void consumirRecurso() {
-        AlgoritmoExclusao.mostrarConsole("Processo " + getCdProcesso() + " consumindo recurso do coordenador");
+    public void consumirRecurso(int tempo) {
+        AlgoritmoExclusao.mostrarConsole("Processo " + getCdProcesso() + " consumindo recurso do coordenador por " + tempo/1000 + "s");
     }
 
     public void concederPermissaoAcesso(Long cdProcesso) {

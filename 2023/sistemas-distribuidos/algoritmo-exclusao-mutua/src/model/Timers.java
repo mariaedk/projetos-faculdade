@@ -1,8 +1,10 @@
 package model;
 
 public enum Timers {
-    ADICIONA(10000),
-    INATIVAR_COORDENADOR(100000);
+    // A cada 40 segundos um novo processo deve ser criado (ID randômico)
+    ADICIONA(40000),
+    // A cada 1 minuto o coordenador morre
+    INATIVAR_COORDENADOR(60000);
 
     private int desc;
     Timers(int i) {
