@@ -1,0 +1,67 @@
+<ng-container *ngIf="host">
+    <div class="detalhes-host">
+        <header class="titulo-principal">
+            <h1>Visualizar dados do host </h1>
+            <hr>
+        </header>
+    
+        <header class="titulo-principal">
+            <h4>Informações do host</h4>
+            <hr>
+        </header>
+        <div class="separator-info">
+            <p> <b>Nome do host:</b> {{ host.infoHostDTO.nomeHost }}</p>
+            <p> <b>Horas ativas:</b> {{ host.infoHostDTO.horaUltimoReinicio }}</p>
+            <p> <b>Dias desde última reinicialização:</b> {{ host.infoHostDTO.diasAtivos }}</p>
+        </div>
+    
+        <header class="titulo-principal">
+            <h4>Informações da memória</h4>
+            <hr>
+        </header>
+        <div class="separator-info">
+            <p> <b>Memória total:</b> {{ host.infoMemoriaDTO.memoriaTotal }} GB</p>
+            <p> <b>Memória usada:</b> {{ host.infoMemoriaDTO.memoriaUsada }} GB</p>
+            <p> <b>Memória RAM:</b> {{ host.infoMemoriaDTO.memoriaRam }}</p>
+            <p> <b>Porcentagem de memória utilizada:</b> {{ host.infoMemoriaDTO.porcetagemMemoria }}</p>
+        </div>
+    
+        <header class="titulo-principal">
+            <h4>Informações do sistema</h4>
+            <hr>
+        </header>
+        <div class="separator-info">
+            <p> <b>Hardware:</b> {{ host.infoSistemaDTO.hardware }}</p>
+            <p> <b>Software:</b> {{ host.infoSistemaDTO.software }}</p>
+            <p> <b>Sistema operacional:</b> {{ host.infoSistemaDTO.sistemaOperacional }}</p>
+            <p> <b>Total de usuários: </b> {{ host.infoSistemaDTO.totalUsuarios }}</p>
+            <p> <b>Quantidade de núcleos processadores: </b> {{ host.infoSistemaDTO.nucleoProcessadores }}</p>
+            <p> <b>CPU ocioso: </b> {{ host.infoSistemaDTO.cpuOcisoso }}</p>
+        </div>
+    
+        <header class="titulo-principal">
+            <h4>Lista de processos em execução</h4>
+            <hr>
+        </header>
+        <div class="separator-info">
+            <div class="table-responsive">
+                <table class="table table-hover table-dark">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Processo</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Quantidade de memória</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let host of host.infoProcessosDTO">
+                        <tr class="hover">
+                            <td>{{ host.processo }}</td>
+                            <td>{{ host.tipoProcesso }}</td>
+                            <td>{{ host.memoriaProcesso }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</ng-container>

@@ -1,0 +1,25 @@
+.cadastro {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    min-height: 80vh;
+
+    .titulo-principal {
+        width: 80%;
+        margin: 2rem 0 2rem 0;
+    }
+    
+    .form {
+        width: 80%;
+
+        .form-floating {
+            width: 40%;
+        }
+    
+        .space-right {
+            margin-right: 1rem;
+        }
+    }
+
+
+}

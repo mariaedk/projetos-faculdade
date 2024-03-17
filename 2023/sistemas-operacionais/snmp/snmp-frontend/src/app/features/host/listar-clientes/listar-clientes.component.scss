@@ -1,0 +1,19 @@
+.listar-clientes {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .hover:hover {
+        cursor: pointer;
+    }
+
+    .tabela {
+        width: 80%;
+    }
+
+    .titulo-principal {
+        width: 80%;
+        margin: 2rem 0 2rem 0;
+    }
+}

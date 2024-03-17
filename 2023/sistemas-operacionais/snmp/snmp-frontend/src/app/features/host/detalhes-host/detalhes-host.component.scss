@@ -1,0 +1,19 @@
+.detalhes-host {
+    display: flex; 
+    align-items: center;
+    flex-direction: column;
+    min-height: 80vh;
+
+    .titulo-principal {
+        width: 80%;
+        margin: 2rem 0 2rem 0;
+    }
+
+    .separator-info {
+        width: 80%;
+
+        .table-responsive {
+            max-height: 300px;
+        }
+    }
+}

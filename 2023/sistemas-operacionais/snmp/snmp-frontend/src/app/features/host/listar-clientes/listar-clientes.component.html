@@ -1,0 +1,46 @@
+<div class="listar-clientes">
+  <header class="titulo-principal">
+    <h1>Lista de máquinas cadastradas</h1>
+    <hr>
+  </header>
+  <div class="spinner-border" role="status" *ngIf="listaHosts.length == 0">
+  </div>
+  <div class="tabela">
+    <ng-container *ngIf="listaHosts.length > 0">
+      <div class="table-responsive">
+        <table  class="table table-hover table-dark">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">IP</th>
+              <th scope="col">Host</th>
+              <th scope="col">Latência</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let host of listaHosts">
+            <tr [ngClass]="{'hover': host.pingRede}" (click)="detalhesHost(host)">
+              <td>{{ host.ipHost }}</td>
+              <td>{{ host.dsHost }}</td>
+              <ng-container *ngIf="host.pingRede;">
+                <td>{{ host.latencia }}</td>
+              </ng-container>
+              <ng-container *ngIf="!host.pingRede;">
+                <td>-</td>
+              </ng-container>
+              <ng-container *ngIf="host.pingRede">
+                <td>
+                  <span class="badge text-bg-success">Ativo</span>
+                </td>
+              </ng-container>
+              <ng-container *ngIf="!host.pingRede">
+                <td>
+                  <span class="badge text-bg-danger">Inativo</span>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+  </div>
+</div>

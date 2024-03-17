@@ -1,0 +1,28 @@
+<div class="cadastro">
+    <header class="titulo-principal">
+        <h1>Cadastrar uma máquina por IP</h1>
+        <hr>
+    </header>
+    <div class="form">
+        <div>
+            <div class="form-floating mb-3">
+                <input type="text" [(ngModel)]="ip" class="form-control" id="ip" placeholder="Endereço IP">
+                <label for="ip">Endereço IP</label>
+            </div>
+            <button type="button" class="btn btn-primary space-right" (click)="save()">Cadastrar</button>
+            <button type="reset" class="btn btn-outline-primary">Limpar</button>
+        </div>
+    </div>
+    <ng-container *ngIf="showOkToast">
+        <div class="alert alert-success align-items-center alert-dismissible fade show" role="alert">
+            <strong>IP {{ host.ipHost }}</strong> foi cadastrado com sucesso.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="showErrorToast">
+        <div class="alert alert-danger align-items-center alert-dismissible fade show" role="alert">
+            Não foi possível cadastrar o <strong> IP {{ ip }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </ng-container>
+</div>

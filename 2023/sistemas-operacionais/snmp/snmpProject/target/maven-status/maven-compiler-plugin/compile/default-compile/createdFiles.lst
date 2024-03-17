@@ -1,0 +1,15 @@
+com\furb\snmpProject\data\dto\InfoSistemaDTO.class
+com\furb\snmpProject\services\ping\IpRepos.class
+com\furb\snmpProject\data\dto\InfoProcessosDTO.class
+com\furb\snmpProject\data\dto\InfoMemoriaDTO.class
+com\furb\snmpProject\data\enums\TipoOID$SNMPType.class
+com\furb\snmpProject\data\dto\DetalhesHostDTO.class
+com\furb\snmpProject\data\repositories\HostRepository.class
+com\furb\snmpProject\data\dto\HostDTO.class
+com\furb\snmpProject\services\snmp\TrataRequisicaoSNMP.class
+com\furb\snmpProject\data\dto\InfoHostDTO.class
+com\furb\snmpProject\controller\HostController.class
+com\furb\snmpProject\data\entities\Host.class
+com\furb\snmpProject\SnmpProjectApplication.class
+com\furb\snmpProject\data\enums\TipoOID.class
+com\furb\snmpProject\services\snmp\RequisicaoSNMP.class
