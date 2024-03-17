@@ -7,7 +7,6 @@ public class Trabalho1 {
     public static void main(String[] args) {
        List<List<Ponto>> coordenadasPorGaleria = new ArrayList<>();
        Scanner scanner = new Scanner(System.in);
-
        // Ler todas as coordenadas de todos os polígonos
        while (true) {
             int numeroPontosGaleria = scanner.nextInt();
@@ -61,7 +60,7 @@ public class Trabalho1 {
                 if (sentido > 0 && produtoVetorial < 0) {
                     return false;
                 }
-                // se estiver no sentindo da direita e houver uma mudança para a direita
+                // se estiver no sentindo da direita e houver uma mudança para a esquerda
                 if (sentido < 0 && produtoVetorial > 0) {
                     return false;
                 }
@@ -75,14 +74,12 @@ public class Trabalho1 {
         // subtrai para garantir que esteja dentro do tamanho da lista
         Ponto ponto2 = coordenadas.get((i + 1 < coordenadas.size() ? i + 1 : i + 1 - coordenadas.size()));
         Ponto ponto3 = coordenadas.get((i + 2 < coordenadas.size() ? i + 2 : i + 2 - coordenadas.size()));
-
         return (ponto2.getX() - ponto1.getX()) * (ponto3.getY() - ponto1.getY()) - (ponto2.getY() - ponto1.getY()) * (ponto3.getX() - ponto1.getX());
     }
 
     public static class Ponto {
         private final int x;
         private final int y;
-
         public Ponto(int x, int y) {
             this.x = x;
             this.y = y;
