@@ -131,7 +131,3 @@ if __name__ == "__main__":
   print("Coeficientes calculados manualmente:", BETA[0])
 
   print(model.predict(matriz_H))
-
-
-
-
