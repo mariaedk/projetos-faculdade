@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Usuário</title>
+</head>
+<body>
+<h2>Cadastro de Usuário</h2>
+<form action="#" th:action="@{/api/usuarios/criar}" method="post" th:object="${usuarioPojo}">
+    <label for="login">Login:</label>
+    <input type="text" id="login" name="login" th:field="*{login}"/><br/>
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" name="senha" th:field="*{senha}"/><br/>
+    <button type="submit">Criar Usuário</button>
+</form>
+</body>
+</html>
