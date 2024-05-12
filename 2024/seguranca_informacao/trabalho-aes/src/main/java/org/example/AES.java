@@ -1,136 +1,135 @@
 package org.example;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class AES {
 
-    /**
-     * Criptografa o arquivo
-     *
-     * @param listaBlocos - blocos de 16Bytes de texto não criptografado
-     * @param roundKey - lista das chaves geradas para a criptografia
-     * @return Listint[][] lista com blocos de 16Bytes criptografados em formato decimal
-     */
-    private List<int[][]> cifrarArquivo(List<int[][]> listaBlocos, List<int[][]> roundKey) {
-
-        List<int[][]> blocosCifrados = new ArrayList<>();
-        int[][] matriz;
-
-        for (int[][] bloco : listaBlocos) {
-            //primeira etapa
-            matriz = efetuarXor(bloco, roundKey.get(0));
-
-            for (int rodada = 1; rodada < 10; rodada ++) {
-                //segunda etapa
-                matriz = subBytes(matriz);
-                //terceira etapa
-                matriz = shiftRows(matriz);
-                //quarta etapa
-                matriz = mixColumns(matriz);
-                //quinta etapa
-                matriz = efetuarXor(matriz, roundKey.get(rodada));
-            }
-
-            matriz = subBytes(matriz);
-            matriz = shiftRows(matriz);
-            matriz = efetuarXor(matriz, roundKey.get(10));
-
-            //adicionando o bloco cifrado a lista
-            blocosCifrados.add(matriz);
-        }
-
-        return blocosCifrados;
+    public AES() {
+        iniciar();
     }
 
-    /**
-     * Efetua operação xor com duas matrizes
-     * (se valor matriz 1 == valor matriz 2 = 1 senão 0
-     *
-     * @param bloco matriz 4x4
-     * @param key matriz 4x4, a roundKey
-     * @return matriz 4x4
-     */
-    private int[][] efetuarXor(int[][] bloco, int[][] key) {
-        int[][] resultado = new int[4][4];
+    private void iniciar() {
+        try {
+            Chaves chaves = new Chaves();
+            CifraAES cifra = new CifraAES();
 
-        if(bloco.length != key.length) {
-            throw new IllegalArgumentException("Matrizes com tamanhos diferentes");
+            final String conteudo = getArquivo();
+            // exemplo chave slide -> 65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80
+            final String chave = getChaveCriptografia();
+
+            List<int[][]> roundKeys = chaves.getRoundKeys(chave);
+            List<int[][]> listaBlocos = preencherPKCS7(conteudo.getBytes());
+
+            cifra.cifrarArquivo(listaBlocos, roundKeys);
+            //TODO escolhar arquivo, gerar arquivo e salvar
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private String getArquivo() throws IllegalArgumentException, IOException {
+        //caminho para arquivo teste - C:/Users/maria/OneDrive/Documentos/TESTE.txt
+        StringBuilder conteudo = new StringBuilder();
+        JFileChooser jfc = new JFileChooser();
+        File arq = null;
+
+        //filtro para somente arquivos .txt e .bin
+        jfc.setFileFilter(new FileNameExtensionFilter("Arquivo para criptografar", "txt", "bin"));
+
+        if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            arq = jfc.getSelectedFile();
         }
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                resultado[i][j] = bloco[i][j] ^ key[i][j];
+        // Verifica se o arquivo existe
+        if (arq == null || !arq.exists()) {
+            throw new IllegalArgumentException(String.format("%s - %d", "Falha ao ler arquivo selecionado", 1000L));
+        }
+
+        //le o arquivo selecionado
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(arq))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                conteudo.append(line);
+                conteudo.append(System.lineSeparator());
             }
         }
 
-        return resultado;
+        return conteudo.toString();
     }
 
-    /**
-     *  Troca os valores da matriz, de acordo com a tabela de valores do SBox
-     *
-     * @param matriz matriz 4x4
-     * @return matriz 4x4
-     */
-    private int[][] subBytes(int[][] matriz) {
-        int[][] resultado =  new int[4][4];
+    private String getChaveCriptografia() {
+        Scanner scn = new Scanner(System.in);
+        String chave;
+        boolean condicao;
 
-        if(matriz != null && matriz.length != 16) {
-            for (int coluna = 0; coluna < 4; coluna ++) {
-                for (int linha = 0; linha < 4; linha ++) {
-                    resultado[linha][coluna] = SBox.getValor(matriz[linha][coluna]);
-                }
+        do {
+            System.out.print("Chave da criptografia: ");
+            chave = scn.nextLine();
+
+            condicao = chave == null || chave.isEmpty() || chave.isBlank();
+
+            if (condicao) {
+                System.out.println("Chave inválida!\n");
+            }
+
+        } while (condicao);
+
+        scn.close();
+
+        return chave;
+    }
+    private List<int[][]> preencherPKCS7(byte[] bytesArquivo) {
+        int tamanhoBloco = 16;
+        //para o PKCS7
+        int tamanhoPreencher = tamanhoBloco - (bytesArquivo.length % tamanhoBloco);
+        byte[] arquivoPreenchido = Arrays.copyOf(bytesArquivo, bytesArquivo.length + tamanhoPreencher);
+        //para o bloco
+        List<int[][]> blocosHexDecimal = new ArrayList<>();
+
+        //preecher para ficar multiplo de 16 caso necessite
+        for (int i = bytesArquivo.length; i < arquivoPreenchido.length; i++) {
+            arquivoPreenchido[i] = (byte) tamanhoPreencher;
+        }
+
+        for (int i = 0; i < arquivoPreenchido.length; i += tamanhoBloco) {
+            //16 em 16 bytes
+            byte[] bytesBloco = Arrays.copyOfRange(arquivoPreenchido, i, i + tamanhoBloco);
+            //cria o bloco em hexadecimal e adiciona na lista de blocos
+            blocosHexDecimal.add(getBlocoArquivo(bytesBloco));
+        }
+
+        return blocosHexDecimal;
+    }
+
+    private int[][] getBlocoArquivo(byte[] bytesBloco) {
+
+        if (bytesBloco == null || bytesBloco.length != 16) {
+            throw new IllegalArgumentException("tamanho de bytes inválidos - esperado 16 bytes");
+        }
+
+        int[][] decimalBloco = new int[4][4];
+
+        //adiciona cs bytes e tranforma para hexadecimal
+        for (int coluna = 0; coluna < 4; coluna++) {
+            for (int linha = 0; linha < 4; linha++) {
+                decimalBloco[linha][coluna] = bytesBloco[coluna * 4 + linha] & 0xFF;
             }
         }
 
-        return resultado;
+        return decimalBloco;
     }
 
-    /**
-     * Embaralha a matriz
-     * 1ª linha não mexe
-     * 2ª linha vai uma pos para a esquerda
-     * 3ª linha vai duas pos para a esquerda
-     * 4ª linha vai tres pos para a esquerda
-     *
-     * @param matriz matriz 4x4
-     * @return matriz 4x4
-     */
-    private int[][] shiftRows(int[][] matriz) {
-        int[][] retorno = new int[4][4];
-
-        // Primeira linha permanece inalterada
-        retorno[0] = matriz[0];
-
-        // Segunda linha é rotacionada uma posição para a esquerda
-        for (int col = 0; col < 4; col++) {
-            retorno[1][col] = matriz[1][(col + 1) % 4];
-        }
-
-        // Terceira linha é rotacionada duas posições para a esquerda
-        for (int col = 0; col < 4; col++) {
-            retorno[2][col] = matriz[2][(col + 2) % 4];
-        }
-
-        // Quarta linha é rotacionada três posições para a esquerda
-        for (int col = 0; col < 4; col++) {
-            retorno[3][col] = matriz[3][(col + 3) % 4];
-        }
-
-        return retorno;
+    public static void main(String[] args) {
+        new AES();
     }
-
-    /**
-     *
-     * @param matriz matriz 4x4
-     * @return matriz 4x4
-     */
-    private int[][] mixColumns(int[][] matriz) {
-        int[][] retorno = new int[4][4];
-        //TODO implementar
-
-        return retorno;
-    }
-
 }

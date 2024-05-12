@@ -30,7 +30,7 @@ public class ExpansaoChave {
     public int[] roundConstant(int roundKeyNumero) {
         // roundKeyNumero -> número da rodada. o primeiro byte do array que retorna é o byte relativo ao número da roundkey
         // o resto é 0.
-        int[] roundConstants = new int[Main.TAMANHO_COLUNAS_LINHAS];
+        int[] roundConstants = new int[Chaves.TAMANHO_COLUNAS_LINHAS];
         int roundKeyByte = this.roundConstantMatriz[roundKeyNumero];
         roundConstants[0] = roundKeyByte;
         return roundConstants;
