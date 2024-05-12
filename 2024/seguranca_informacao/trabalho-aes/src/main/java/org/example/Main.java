@@ -1,5 +1,7 @@
 package org.example;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -32,29 +34,26 @@ public class Main {
     public static final int TAMANHO_COLUNAS_LINHAS = 4;
 
     public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        // C:/Users/maria/OneDrive/Documentos/TESTE.txt
-        System.out.print("Caminho do arquivo: ");
-        String caminho = scanner.nextLine();
-        File file = new File(caminho);
 
-        if (!isFileValid(file)) return;
+        try {
+            final String conteudo = getArquivo();
+            // exemplo chave slide -> 65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80
+            final String chave = getChaveCriptografia();
 
-        final String conteudo = lerArquivo(file);
-        // exemplo chave slide -> 65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80
-        System.out.print("Chave da criptografia: ");
-        final String chave = scanner.nextLine();
+            int[][] matrizEstado = getMatrizEstado(chave);
+            byte[] dadosPreenchidos = preencherPKCS7(conteudo.getBytes());
 
-        int[][] matrizEstado = getMatrizEstado(chave);
+            ExpansaoChave expansaoChave = new ExpansaoChave(SBOX);
 
-        byte[] dadosPreenchidos = preencherPKCS7(conteudo.getBytes());
+            // trata como inteiros pois se tratar como byte, acontece erro no resultado na hora de substituir os valores na
+            // sbox. o java trata apenas bytes entre -128 e 128, qualquer valor acima disso é incrementado pro lado negativo
+            // ou positivo, e então pra retornar pra hexa, dá o numero errado, oq faz os calculos darem errado também.
+            int[] primeiraPalavra = gerarPrimeiraPalavraRoundKey(matrizEstado);
 
-        ExpansaoChave expansaoChave = new ExpansaoChave(SBOX);
 
-        // trata como inteiros pois se tratar como byte, acontece erro no resultado na hora de substituir os valores na
-        // sbox. o java trata apenas bytes entre -128 e 128, qualquer valor acima disso é incrementado pro lado negativo
-        // ou positivo, e então pra retornar pra hexa, dá o numero errado, oq faz os calculos darem errado também.
-        int[] primeiraPalavra = gerarPrimeiraPalavraRoundKey(matrizEstado);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     // precisa gerar a primeira palavra por esse processo. o resto teoricamente é só fazer XOR, ver slide 18 do conteúdo
@@ -104,23 +103,55 @@ public class Main {
         return matrizEstadoChave;
     }
 
-    private static String lerArquivo(File file) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+    private static String getArquivo() throws IllegalArgumentException, IOException {
+        //caminho para arquivo teste - C:/Users/maria/OneDrive/Documentos/TESTE.txt
         StringBuilder conteudo = new StringBuilder();
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            conteudo.append(line);
-            conteudo.append(System.lineSeparator());
+        JFileChooser jfc = new JFileChooser();
+        File arq = null;
+
+        //filtro para somente arquivos .txt e .bin
+        jfc.setFileFilter(new FileNameExtensionFilter("Arquivo para criptografar", "txt", "bin"));
+
+        if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            arq = jfc.getSelectedFile();
         }
-        bufferedReader.close();
+
+        // Verifica se o arquivo existe
+        if (arq == null || !arq.exists()) {
+            throw new IllegalArgumentException("Falha ao ler arquivo selecionado");
+        }
+
+        //le o arquivo selecionado
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(arq))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                conteudo.append(line);
+                conteudo.append(System.lineSeparator());
+            }
+        }
+
         return conteudo.toString();
     }
 
-    private static boolean isFileValid(File file) {
-        if (!file.exists()) {
-            System.out.println("Arquivo não encontrado.");
-            return false;
-        }
-        return true;
+    private static String getChaveCriptografia() {
+        Scanner scn = new Scanner(System.in);
+        String chave;
+        boolean condicao;
+
+        do {
+            System.out.print("Chave da criptografia: ");
+            chave = scn.nextLine();
+
+            condicao = chave == null || chave.isEmpty() || chave.isBlank();
+
+            if (condicao) {
+                System.out.println("Chave inválida!\n");
+            }
+
+        } while (condicao);
+
+        scn.close();
+
+        return chave;
     }
 }
