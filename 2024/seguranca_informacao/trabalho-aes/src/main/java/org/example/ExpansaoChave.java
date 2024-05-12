@@ -2,20 +2,19 @@ package org.example;
 
 public class ExpansaoChave {
 
-    private final byte[][] sbox;
+    private final int[][] sbox; // Mudança aqui para int[][]
 
-    private final byte[] roundConstantMatriz = {
-            (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x04, (byte) 0x08, (byte) 0x10, (byte) 0x20, (byte) 0x40, (byte) 0x80, (byte) 0x1b, (byte) 0x36
+    private final int[] roundConstantMatriz = {
+            0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36
     };
 
-    public ExpansaoChave(byte[][] sbox) {
+    public ExpansaoChave(int[][] sbox) {
         this.sbox = sbox;
     }
 
-    // na primeira execução vai fornecer como parâmetro a última palavra (última coluna da matriz de estado de entrada)
-    public byte[] rotWord(byte[] palavra) {
-        // o primeiro byte vira o último.
-        byte primeiroByte = palavra[0];
+    public int[] rotWord(int[] palavra) {
+        // rotacionar os bytes. o primeiro byte se torna o último byte.
+        int primeiroByte = palavra[0];
         for (int i = 0; i < palavra.length - 1; i++) {
             palavra[i] = palavra[i + 1];
         }
@@ -23,33 +22,45 @@ public class ExpansaoChave {
         return palavra;
     }
 
-    public byte[] subWord(byte[] word) {
-        // vai gerar um novo array com valores mapeados da sbox
-        byte[] novosValores = new byte[word.length];
+    public int[] subWord(int[] word) {
+        // cria um novo array com os bytes substituídos na SBOX
+        int[] novosValores = new int[word.length];
         for (int i = 0; i < word.length; i++) {
-            // & -> operador bitwise que compara cada bit de dois operandos
-            // 0xF0 -> máscara hexadecimal usada para isolar o bit mais significativo
+            // 0xF0 -> máscara que isola os bits mais significativos, faz um AND pra pegar só eles
             // >> 4 -> desloca os bits para a direita em 4 posições, ou seja, descarta os 4 bits menos significativos
-            // e coloca os 4 mais significativos na posição deles, converte para decimal para ter a linha na sbox (pois nao reconhece A por exemplo, que é 10)
-            int row = (word[i] & 0xF0) >> 4;
-            // 0xF0 -> máscara hexadecimal usada para isolar o bit menos significativos
-            // retorna um inteiro que vai representar a coluna na sbox
-            int col = word[i] & 0x0F;
-            // na sbox, pesquisa os valores pela linha e coluna
-            novosValores[i] = sbox[row][col];
+            // faz o deslocamento pois quando converter para decimal, obtém a linha
+            /**
+             * Exemplo: 0xAB. Em binário, isso seria 1010 1011.
+             * Quando fazemos a operação & 0xF0, estamos "zerando" os 4 bits menos significativos do byte original.
+             * Isso resulta em 1010 0000 (ou 0xA0 em hexadecimal).
+             * Agora, se fizermos >> 4, estamos deslocando esses 4 bits mais significativos para a direita, deixando-os na posição dos bits menos significativos.
+             * O resultado é 0000 1010, que em decimal é 10. Esse é o valor que usamos para determinar a linha na S-Box.
+             */
+            int linha = (word[i] & 0xF0) >> 4;
+            // 0x0F -> máscara que isola os bits menos significativos, faz um AND pra pegar só eles
+            int coluna = word[i] & 0x0F;
+            // & 0xFF Converte em um inteiro sem sinal, ou seja, retorna a representação do hexadecimal na SBOX, em decimal.
+            novosValores[i] = sbox[linha][coluna] & 0xFF;
         }
         return novosValores;
     }
 
-    public byte[] roundConstant(int roundKeyNumero) {
-        byte[] roundConstants = new byte[Main.TAMANHO_COLUNAS_LINHAS];
-        byte roundKeyByte = this.roundConstantMatriz[roundKeyNumero];
-        // o primeiro byte é relativo a roundKey
+    public int[] roundConstant(int roundKeyNumero) {
+        // roundKeyNumero -> número da rodada. o primeiro byte do array que retorna é o byte relativo ao número da roundkey
+        // o resto é 0.
+        int[] roundConstants = new int[Main.TAMANHO_COLUNAS_LINHAS];
+        int roundKeyByte = this.roundConstantMatriz[roundKeyNumero];
         roundConstants[0] = roundKeyByte;
-        for (int i = 1; i < Main.TAMANHO_COLUNAS_LINHAS; i++) {
-            roundConstants[i] = (byte) 0;
-        }
         return roundConstants;
     }
 
+    public int[] xor(int[] subWord, int[] roundConstant) {
+        // literalmente aplica um xor entre os arrays. ele consegue aplicar mesmo sendo um int pq ele interpreta
+        // byte como int também.
+        int[] result = new int[subWord.length];
+        for (int i = 0; i < subWord.length; i++) {
+            result[i] = subWord[i] ^ roundConstant[i];
+        }
+        return result;
+    }
 }
