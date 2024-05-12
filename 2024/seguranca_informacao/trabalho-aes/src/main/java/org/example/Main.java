@@ -6,12 +6,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
-    // essa matriz está nos slides do algoritmo AES
     public static final int[][] SBOX = {
             { 0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76 },
             { 0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0 },
@@ -43,28 +44,51 @@ public class Main {
             int[][] matrizEstado = getMatrizEstado(chave);
             byte[] dadosPreenchidos = preencherPKCS7(conteudo.getBytes());
 
-            ExpansaoChave expansaoChave = new ExpansaoChave(SBOX);
-
-            // trata como inteiros pois se tratar como byte, acontece erro no resultado na hora de substituir os valores na
-            // sbox. o java trata apenas bytes entre -128 e 128, qualquer valor acima disso é incrementado pro lado negativo
-            // ou positivo, e então pra retornar pra hexa, dá o numero errado, oq faz os calculos darem errado também.
-            int[] primeiraPalavra = gerarPrimeiraPalavraRoundKey(matrizEstado);
-
+            List<int[][]> roundKeys = gerarChaves(matrizEstado);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    // precisa gerar a primeira palavra por esse processo. o resto teoricamente é só fazer XOR, ver slide 18 do conteúdo
-    private static int[] gerarPrimeiraPalavraRoundKey(int[][] matrizEstado) {
+    private static List<int[][]> gerarChaves(int[][] matrizEstado) {
         ExpansaoChave expansaoChave = new ExpansaoChave(SBOX);
+        List<int[][]> roundKeys = new ArrayList<>();
+        // a primeira roundKey é a própria chave fornecida
+        roundKeys.add(matrizEstado);
+
+        // gerar as outras 10 chaves
+        for (int i = 1; i < 11; i++) {
+            int[][] roundKeyAnterior = roundKeys.get(i - 1);
+            // copia a última palavra da round key anterior e gera a primeira palavra para esta round key
+            int[] primeiraSubChave = gerarPrimeiraPalavraRoundKey(roundKeyAnterior, expansaoChave, i - 1);
+            // coloca a primeira palavra para a primeira coluna
+            int[][] subkey = armazenaColuna(new int[4][4], primeiraSubChave, 0);
+
+            // completa as colunas restantes
+            for (int j = 1; j < TAMANHO_COLUNAS_LINHAS; j++) {
+                // pega a palavra anterior
+                int[] palavraAnterior = getColuna(subkey, j - 1);
+                // pega a palavra da posição correspondente a atual, na roundkey anterior
+                int[] palavraRoundKeyAnterior = getColuna(roundKeyAnterior, j);
+                // XOR
+                int[] xor = expansaoChave.xor(palavraAnterior, palavraRoundKeyAnterior);
+                // preenche a coluna da subkey
+                subkey = armazenaColuna(subkey, xor, j);
+            }
+
+            roundKeys.add(subkey);
+        }
+        return roundKeys;
+    }
+
+    private static int[] gerarPrimeiraPalavraRoundKey(int[][] matrizEstado, ExpansaoChave expansaoChave, int roundKeyNumero) {
         int[] primeiraPalavraRoundKey;
         int ultimaColuna = matrizEstado.length - 1;
 
         primeiraPalavraRoundKey = expansaoChave.rotWord(getColuna(matrizEstado, ultimaColuna));
         primeiraPalavraRoundKey = expansaoChave.subWord(primeiraPalavraRoundKey);
-        int[] roundConstant = expansaoChave.roundConstant(0);
+        int[] roundConstant = expansaoChave.roundConstant(roundKeyNumero);
         primeiraPalavraRoundKey = expansaoChave.xor(primeiraPalavraRoundKey, roundConstant);
         primeiraPalavraRoundKey = expansaoChave.xor(primeiraPalavraRoundKey, getColuna(matrizEstado, 0));
         return primeiraPalavraRoundKey;
@@ -72,15 +96,22 @@ public class Main {
 
     private static int[] getColuna(int[][] matrizEstado, int indexColuna) {
         int comprimento = matrizEstado.length;
-        int[] ultimaColuna = new int[comprimento];
+        int[] coluna = new int[comprimento];
         for (int i = 0; i < comprimento; i++) {
-            ultimaColuna[i] = matrizEstado[i][indexColuna];
+            coluna[i] = matrizEstado[i][indexColuna];
         }
-        return ultimaColuna;
+        return coluna;
+    }
+
+    private static int[][] armazenaColuna(int[][] matriz, int[] coluna, int indexColuna) {
+        int[][] newValue = matriz;
+        for (int i = 0; i < TAMANHO_COLUNAS_LINHAS; i++) {
+            newValue[i][indexColuna] = coluna[i];
+        }
+        return newValue;
     }
 
     private static byte[] preencherPKCS7(byte[] dados) {
-        // TODO: Deve gerar sempre um bloco a mais? atualmente está fazendo isso
         int tamanhoBloco = 16; // 16 bytes -> 128 bits
         int tamanhoPreencher = tamanhoBloco - (dados.length % tamanhoBloco);
         byte[] dadosPreenchidos = Arrays.copyOf(dados, dados.length + tamanhoPreencher);

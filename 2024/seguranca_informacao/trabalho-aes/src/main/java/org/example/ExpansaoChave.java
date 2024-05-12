@@ -54,12 +54,12 @@ public class ExpansaoChave {
         return roundConstants;
     }
 
-    public int[] xor(int[] subWord, int[] roundConstant) {
+    public int[] xor(int[] array1, int[] array2) {
         // literalmente aplica um xor entre os arrays. ele consegue aplicar mesmo sendo um int pq ele interpreta
         // byte como int também.
-        int[] result = new int[subWord.length];
-        for (int i = 0; i < subWord.length; i++) {
-            result[i] = subWord[i] ^ roundConstant[i];
+        int[] result = new int[array1.length];
+        for (int i = 0; i < array1.length; i++) {
+            result[i] = array1[i] ^ array2[i];
         }
         return result;
     }
