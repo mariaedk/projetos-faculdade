@@ -2,10 +2,7 @@ package org.example;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,25 +10,29 @@ import java.util.Scanner;
 
 public class AES {
 
+    File arquivo;
+
     public AES() {
         iniciar();
     }
 
     private void iniciar() {
         try {
+            Scanner scn = new Scanner(System.in);
             Chaves chaves = new Chaves();
             CifraAES cifra = new CifraAES();
 
             final String conteudo = getArquivo();
             // exemplo chave slide -> 65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80
-            final String chave = getChaveCriptografia();
+            final String chave = getTextoUsuario(scn, "Chave da criptografia: ", "Chave inválida!\n");
 
             List<int[][]> roundKeys = chaves.getRoundKeys(chave);
             List<int[][]> listaBlocos = preencherPKCS7(conteudo.getBytes());
+            List<int[][]> blocosCifrados = cifra.cifrarArquivo(listaBlocos, roundKeys);
 
-            cifra.cifrarArquivo(listaBlocos, roundKeys);
-            //TODO escolher arquivo, gerar arquivo e salvar
-
+            montarArquivoEncriptografado(scn, blocosCifrados);
+            
+            scn.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -41,50 +42,46 @@ public class AES {
         //caminho para arquivo teste - C:/Users/maria/OneDrive/Documentos/TESTE.txt
         StringBuilder conteudo = new StringBuilder();
         JFileChooser jfc = new JFileChooser();
-        File arq = null;
 
         //filtro para somente arquivos .txt e .bin
         jfc.setFileFilter(new FileNameExtensionFilter("Arquivo para criptografar", "txt", "bin"));
 
         if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            arq = jfc.getSelectedFile();
+            arquivo = jfc.getSelectedFile();
         }
 
         // Verifica se o arquivo existe
-        if (arq == null || !arq.exists()) {
+        if (arquivo == null || !arquivo.exists()) {
             throw new IllegalArgumentException(String.format("%s - %d", "Falha ao ler arquivo selecionado", 1000L));
         }
 
         //le o arquivo selecionado
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(arq))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(arquivo))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 conteudo.append(line);
-                conteudo.append(System.lineSeparator());
             }
         }
 
         return conteudo.toString();
     }
 
-    private String getChaveCriptografia() {
-        Scanner scn = new Scanner(System.in);
+    private String getTextoUsuario(Scanner scn, String msg, String msgErro) {
+
         String chave;
         boolean condicao;
 
         do {
-            System.out.print("Chave da criptografia: ");
+            System.out.print(msg);
             chave = scn.nextLine();
 
             condicao = chave == null || chave.isEmpty() || chave.isBlank();
 
             if (condicao) {
-                System.out.println("Chave inválida!\n");
+                System.out.println(msgErro);
             }
 
         } while (condicao);
-
-        scn.close();
 
         return chave;
     }
@@ -127,6 +124,51 @@ public class AES {
         }
 
         return decimalBloco;
+    }
+
+    private void montarArquivoEncriptografado(Scanner scn, List<int[][]> blocosCriptografados) throws IOException {
+        if(blocosCriptografados == null || blocosCriptografados.isEmpty()) {
+            throw new IllegalArgumentException(String.format("%s - %d", "Não existe bloco criptografado", 9998L));
+        }
+
+        String nomeArquivo = getTextoUsuario(scn, "Nome do arquivo a ser gerado: ", "Nome inválido\n");
+        File arqCript = new File(alterarNomeArquivo(arquivo.getPath(), nomeArquivo));
+        boolean condicao = arqCript.exists();
+        int index = 1;
+
+        while (condicao) {
+            arqCript = new File(alterarNomeArquivo(arquivo.getPath(), String.format("%s(%d)", nomeArquivo, index++)));
+            condicao = arqCript.exists();
+        }
+
+        FileOutputStream fos = new FileOutputStream(arqCript);
+
+        for( int[][] blocoCript : blocosCriptografados) {
+            for (int linha = 0; linha < 4; linha ++) {
+                for (int coluna = 0; coluna < 4; coluna ++) {
+                    fos.write(blocoCript[linha][coluna]);
+                }
+            }
+        }
+
+        fos.close();
+    }
+
+    /**
+     * Método para alterar o nome do arquivo em um caminho, mantendo a extensão original
+     */
+    private String alterarNomeArquivo(String caminho, String novoNome) {
+        // Encontrando a posição do último caractere '\\'
+        int ultimaBarraIndex = caminho.lastIndexOf('\\');
+
+        // Extraindo o diretório do caminho original
+        String diretorio = caminho.substring(0, ultimaBarraIndex + 1);
+
+        // Extraindo a extensão do arquivo
+        String extensao = caminho.substring(caminho.lastIndexOf('.'));
+
+        // Concatenando o novo nome do arquivo com a extensão original e o diretório
+        return diretorio + novoNome + extensao;
     }
 
     public static void main(String[] args) {

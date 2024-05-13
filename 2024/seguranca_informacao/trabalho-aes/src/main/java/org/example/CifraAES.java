@@ -5,13 +5,6 @@ import java.util.List;
 
 public class CifraAES {
 
-    private static final int[][] MIX_COLUMN_MATRIX = {
-            {0x02, 0x03, 0x01, 0x01},
-            {0x01, 0x02, 0x03, 0x01},
-            {0x01, 0x01, 0x02, 0x03},
-            {0x03, 0x01, 0x01, 0x02}
-    };
-
     /**
      * Criptografa o arquivo
      *
@@ -160,6 +153,13 @@ public class CifraAES {
     }
 
     private void multiplicacaoGalois(int[][] matriz, int linha, int coluna, int[][] newState) {
+        final int[][] MIX_COLUMN_MATRIX = {
+                {0x02, 0x03, 0x01, 0x01},
+                {0x01, 0x02, 0x03, 0x01},
+                {0x01, 0x01, 0x02, 0x03},
+                {0x03, 0x01, 0x01, 0x02}
+        };
+
         // linha pega na matriz de multiplicacao, coluna pega da matriz de estado
         int[] linhaMatrizMultiplicacao = MIX_COLUMN_MATRIX[linha];
         int[] colunaMatrizEstado = getColuna(matriz, coluna);
