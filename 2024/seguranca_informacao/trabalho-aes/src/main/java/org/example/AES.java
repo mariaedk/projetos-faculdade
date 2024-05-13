@@ -31,7 +31,7 @@ public class AES {
             List<int[][]> blocosCifrados = cifra.cifrarArquivo(listaBlocos, roundKeys);
 
             montarArquivoEncriptografado(scn, blocosCifrados);
-            
+
             scn.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -152,6 +152,8 @@ public class AES {
         }
 
         fos.close();
+
+        System.out.println("Arquivo criptografado com sucesso!");
     }
 
     /**

@@ -6,7 +6,7 @@ public class ExpansaoChave {
             0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36
     };
 
-    public int[] rotWord(int[] palavra) {
+    protected int[] rotWord(int[] palavra) {
         // rotacionar os bytes. o primeiro byte se torna o último byte.
         int primeiroByte = palavra[0];
         for (int i = 0; i < palavra.length - 1; i++) {
@@ -16,7 +16,7 @@ public class ExpansaoChave {
         return palavra;
     }
 
-    public int[] subWord(int[] word) {
+    protected int[] subWord(int[] word) {
         // cria um novo array com os bytes substituídos na SBOX
         int[] novosValores = new int[word.length];
 
@@ -27,7 +27,7 @@ public class ExpansaoChave {
         return novosValores;
     }
 
-    public int[] roundConstant(int roundKeyNumero) {
+    protected int[] roundConstant(int roundKeyNumero) {
         // roundKeyNumero -> número da rodada. o primeiro byte do array que retorna é o byte relativo ao número da roundkey
         // o resto é 0.
         int[] roundConstants = new int[Chaves.TAMANHO_COLUNAS_LINHAS];
@@ -36,7 +36,7 @@ public class ExpansaoChave {
         return roundConstants;
     }
 
-    public int[] xor(int[] array1, int[] array2) {
+    protected int[] xor(int[] array1, int[] array2) {
         // literalmente aplica um xor entre os arrays. ele consegue aplicar mesmo sendo um int pq ele interpreta
         // byte como int também.
         int[] result = new int[array1.length];

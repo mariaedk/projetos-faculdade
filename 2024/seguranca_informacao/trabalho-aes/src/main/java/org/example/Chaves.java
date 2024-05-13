@@ -3,7 +3,7 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chaves {
+public class Chaves extends ExpansaoChave {
 
     public static final int TAMANHO_COLUNAS_LINHAS = 4;
 
@@ -12,7 +12,6 @@ public class Chaves {
     }
 
     private List<int[][]> gerarChaves(int[][] matrizEstado) {
-        ExpansaoChave expansaoChave = new ExpansaoChave();
         List<int[][]> roundKeys = new ArrayList<>();
         // a primeira roundKey é a própria chave fornecida
         roundKeys.add(matrizEstado);
@@ -21,7 +20,7 @@ public class Chaves {
         for (int i = 1; i < 11; i++) {
             int[][] roundKeyAnterior = roundKeys.get(i - 1);
             // copia a última palavra da round key anterior e gera a primeira palavra para esta round key
-            int[] primeiraSubChave = gerarPrimeiraPalavraRoundKey(roundKeyAnterior, expansaoChave, i - 1);
+            int[] primeiraSubChave = gerarPrimeiraPalavraRoundKey(roundKeyAnterior, i - 1);
             // coloca a primeira palavra para a primeira coluna
             int[][] subkey = armazenaColuna(new int[4][4], primeiraSubChave, 0);
 
@@ -32,7 +31,7 @@ public class Chaves {
                 // pega a palavra da posição correspondente a atual, na roundkey anterior
                 int[] palavraRoundKeyAnterior = getColuna(roundKeyAnterior, j);
                 // XOR
-                int[] xor = expansaoChave.xor(palavraAnterior, palavraRoundKeyAnterior);
+                int[] xor = xor(palavraAnterior, palavraRoundKeyAnterior);
                 // preenche a coluna da subkey
                 subkey = armazenaColuna(subkey, xor, j);
             }
@@ -42,16 +41,16 @@ public class Chaves {
         return roundKeys;
     }
 
-    private int[] gerarPrimeiraPalavraRoundKey(int[][] matrizEstado, ExpansaoChave expansaoChave, int roundKeyNumero) {
+    private int[] gerarPrimeiraPalavraRoundKey(int[][] matrizEstado, int roundKeyNumero) {
         // precisa gerar a primeira palavra por esse processo. o resto teoricamente é só fazer XOR, ver slide 18 do conteúdo
         int[] primeiraPalavraRoundKey;
         int ultimaColuna = matrizEstado.length - 1;
 
-        primeiraPalavraRoundKey = expansaoChave.rotWord(getColuna(matrizEstado, ultimaColuna));
-        primeiraPalavraRoundKey = expansaoChave.subWord(primeiraPalavraRoundKey);
-        int[] roundConstant = expansaoChave.roundConstant(roundKeyNumero);
-        primeiraPalavraRoundKey = expansaoChave.xor(primeiraPalavraRoundKey, roundConstant);
-        primeiraPalavraRoundKey = expansaoChave.xor(primeiraPalavraRoundKey, getColuna(matrizEstado, 0));
+        primeiraPalavraRoundKey = rotWord(getColuna(matrizEstado, ultimaColuna));
+        primeiraPalavraRoundKey = subWord(primeiraPalavraRoundKey);
+        int[] roundConstant = roundConstant(roundKeyNumero);
+        primeiraPalavraRoundKey = xor(primeiraPalavraRoundKey, roundConstant);
+        primeiraPalavraRoundKey = xor(primeiraPalavraRoundKey, getColuna(matrizEstado, 0));
         return primeiraPalavraRoundKey;
     }
 
