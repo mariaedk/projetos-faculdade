@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CifraAES {
+
+    private static final int[][] MIX_COLUMN_MATRIX = {
+            {0x02, 0x03, 0x01, 0x01},
+            {0x01, 0x02, 0x03, 0x01},
+            {0x01, 0x01, 0x02, 0x03},
+            {0x03, 0x01, 0x01, 0x02}
+    };
+
     /**
      * Criptografa o arquivo
      *
@@ -75,7 +83,7 @@ public class CifraAES {
      */
     private int[][] subBytes(int[][] matriz) {
 
-        if (matriz == null || matriz.length != 16) {
+        if (matriz == null || matriz.length != 4) {
             throw new IllegalArgumentException(String.format("%s - %d", "Matriz sem valor", 1002L));
         }
 
@@ -140,18 +148,59 @@ public class CifraAES {
             throw new IllegalArgumentException(String.format("%s - %d", "Matriz sem valor", 1004L));
         }
 
-        int[][] MATRIZ_MULTIPLICACAO = {
-                { 0x02, 0x03, 0x01, 0x01 },
-                { 0x01, 0x02, 0x03, 0x01 },
-                { 0x01, 0x01, 0x02, 0x03 },
-                { 0x03, 0x01, 0x01, 0x02 }
-        };
+        int[][] newState = new int[4][4];
 
+        for (int linha = 0; linha < 4; linha++) {
+            for (int coluna = 0; coluna < 4; coluna++) {
+                multiplicacaoGalois(matriz, linha, coluna, newState);
+            }
+        }
 
-        int[][] retorno = new int[4][4];
-        //TODO implementar
+        return matriz;
+    }
 
-        return retorno;
+    private void multiplicacaoGalois(int[][] matriz, int linha, int coluna, int[][] newState) {
+        // linha pega na matriz de multiplicacao, coluna pega da matriz de estado
+        int[] linhaMatrizMultiplicacao = MIX_COLUMN_MATRIX[linha];
+        int[] colunaMatrizEstado = getColuna(matriz, coluna);
+
+        for (int i = 0; i < linhaMatrizMultiplicacao.length; i++) {
+            // condições slide 28
+            // Se um dos termos for 0, o resultado da multiplicação é 0
+            if (linhaMatrizMultiplicacao[i] == 0 || colunaMatrizEstado[i] == 0) {
+                newState[linha][coluna] = 0;
+                // Se um dos termos for 1, o resultado da multiplicação é igual ao outro termo
+            } else if (linhaMatrizMultiplicacao[i] == 1) {
+                newState[linha][coluna] = colunaMatrizEstado[i];
+            } else if (colunaMatrizEstado[i] == 1) {
+                newState[linha][coluna] = linhaMatrizMultiplicacao[i];
+                // Se os termos não forem 0 e nem 1, deve-se recorrer à tabela L e à tabela E
+            } else {
+                int valorTabelaE = recorrerTabelas(linhaMatrizMultiplicacao, i, colunaMatrizEstado);
+                newState[linha][coluna] = valorTabelaE;
+            }
+        }
+    }
+
+    private static int recorrerTabelas(int[] linhaMatrizMultiplicacao, int i, int[] colunaMatrizEstado) {
+        int valorLinha = MATRIZES.getTabelaLValor(linhaMatrizMultiplicacao[i]);
+        int valorColuna = MATRIZES.getTabelaLValor(colunaMatrizEstado[i]);
+        int soma = valorLinha + valorColuna;
+
+        // se o resultado da soma ultrapassar 0𝑥FF, faz-se ajuste, subtraindo o valor de 0𝑥FF: 𝑟𝑒𝑠𝑢𝑙𝑡𝑎𝑑𝑜 - 0𝑥FF
+        if (soma > 0xFF) {
+            soma = soma - 0xFF;
+        }
+        return MATRIZES.getTabelaEValor(soma);
+    }
+
+    private int[] getColuna(int[][] matrizEstado, int indexColuna) {
+        int comprimento = matrizEstado.length;
+        int[] coluna = new int[comprimento];
+        for (int i = 0; i < comprimento; i++) {
+            coluna[i] = matrizEstado[i][indexColuna];
+        }
+        return coluna;
     }
 
 }

@@ -30,7 +30,7 @@ public class AES {
             List<int[][]> listaBlocos = preencherPKCS7(conteudo.getBytes());
 
             cifra.cifrarArquivo(listaBlocos, roundKeys);
-            //TODO escolhar arquivo, gerar arquivo e salvar
+            //TODO escolher arquivo, gerar arquivo e salvar
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
