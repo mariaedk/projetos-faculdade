@@ -83,7 +83,7 @@ public class CifraAES {
 
         for (int coluna = 0; coluna < 4; coluna ++) {
             for (int linha = 0; linha < 4; linha ++) {
-                resultado[linha][coluna] = SBox.getValor(matriz[linha][coluna]);
+                resultado[linha][coluna] = MATRIZES.getSboxValor(matriz[linha][coluna]);
             }
         }
 
@@ -139,6 +139,14 @@ public class CifraAES {
         if (matriz == null) {
             throw new IllegalArgumentException(String.format("%s - %d", "Matriz sem valor", 1004L));
         }
+
+        int[][] MATRIZ_MULTIPLICACAO = {
+                { 0x02, 0x03, 0x01, 0x01 },
+                { 0x01, 0x02, 0x03, 0x01 },
+                { 0x01, 0x01, 0x02, 0x03 },
+                { 0x03, 0x01, 0x01, 0x02 }
+        };
+
 
         int[][] retorno = new int[4][4];
         //TODO implementar

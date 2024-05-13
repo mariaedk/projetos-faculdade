@@ -21,7 +21,7 @@ public class ExpansaoChave {
         int[] novosValores = new int[word.length];
 
         for (int i = 0; i < word.length; i++) {
-            novosValores[i] = SBox.getValor(word[i]);
+            novosValores[i] = MATRIZES.getSboxValor(word[i]);
         }
 
         return novosValores;
