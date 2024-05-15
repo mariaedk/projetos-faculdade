@@ -39,23 +39,23 @@ public class AES {
     }
 
     private String getArquivo() throws IllegalArgumentException, IOException {
-        //caminho para arquivo teste - C:/Users/maria/OneDrive/Documentos/TESTE.txt
+        // caminho para arquivo teste - C:/Users/maria/OneDrive/Documentos/TESTE.txt
         StringBuilder conteudo = new StringBuilder();
         JFileChooser jfc = new JFileChooser();
 
-        //filtro para somente arquivos .txt e .bin
+        // filtro para somente arquivos .txt e .bin
         jfc.setFileFilter(new FileNameExtensionFilter("Arquivo para criptografar", "txt", "bin"));
 
         if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             arquivo = jfc.getSelectedFile();
         }
 
-        // Verifica se o arquivo existe
+        // verifica se o arquivo existe
         if (arquivo == null || !arquivo.exists()) {
             throw new IllegalArgumentException(String.format("%s - %d", "Falha ao ler arquivo selecionado", 1000L));
         }
 
-        //le o arquivo selecionado
+        // le o arquivo selecionado
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(arquivo))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -87,21 +87,30 @@ public class AES {
     }
     private List<int[][]> preencherPKCS7(byte[] bytesArquivo) {
         int tamanhoBloco = 16;
-        //para o PKCS7
-        int tamanhoPreencher = tamanhoBloco - (bytesArquivo.length % tamanhoBloco);
+        // para o PKCS7
+        int tamanhoPreencher = 0;
+        int diferenca = tamanhoBloco - (bytesArquivo.length % tamanhoBloco);
+
+        if(bytesArquivo.length < 16) {
+            tamanhoPreencher = diferenca;
+        }
+        else if(bytesArquivo.length > 16) {
+            tamanhoPreencher = (bytesArquivo.length % tamanhoBloco) == 0 ? 0 : diferenca;
+        }
+
         byte[] arquivoPreenchido = Arrays.copyOf(bytesArquivo, bytesArquivo.length + tamanhoPreencher);
-        //para o bloco
+        // para o bloco
         List<int[][]> blocosHexDecimal = new ArrayList<>();
 
-        //preecher para ficar multiplo de 16 caso necessite
+        // preecher para ficar multiplo de 16 caso necessite
         for (int i = bytesArquivo.length; i < arquivoPreenchido.length; i++) {
             arquivoPreenchido[i] = (byte) tamanhoPreencher;
         }
 
         for (int i = 0; i < arquivoPreenchido.length; i += tamanhoBloco) {
-            //16 em 16 bytes
+            // 16 em 16 bytes
             byte[] bytesBloco = Arrays.copyOfRange(arquivoPreenchido, i, i + tamanhoBloco);
-            //cria o bloco em hexadecimal e adiciona na lista de blocos
+            // cria o bloco em hexadecimal e adiciona na lista de blocos
             blocosHexDecimal.add(getBlocoArquivo(bytesBloco));
         }
 
@@ -116,7 +125,7 @@ public class AES {
 
         int[][] decimalBloco = new int[4][4];
 
-        //adiciona cs bytes e tranforma para hexadecimal
+        // adiciona cs bytes e tranforma para hexadecimal
         for (int coluna = 0; coluna < 4; coluna++) {
             for (int linha = 0; linha < 4; linha++) {
                 decimalBloco[linha][coluna] = bytesBloco[coluna * 4 + linha] & 0xFF;
@@ -143,10 +152,11 @@ public class AES {
 
         FileOutputStream fos = new FileOutputStream(arqCript);
 
-        for( int[][] blocoCript : blocosCriptografados) {
-            for (int linha = 0; linha < 4; linha ++) {
-                for (int coluna = 0; coluna < 4; coluna ++) {
-                    fos.write(blocoCript[linha][coluna]);
+        for (int[][] blocoCript : blocosCriptografados) {
+            for (int coluna = 0; coluna < 4; coluna ++) {
+                for (int linha = 0; linha < 4; linha ++) {
+                    String hex = Integer.toHexString(blocoCript[linha][coluna]);
+                    fos.write(hex.getBytes());
                 }
             }
         }
@@ -160,16 +170,16 @@ public class AES {
      * Método para alterar o nome do arquivo em um caminho, mantendo a extensão original
      */
     private String alterarNomeArquivo(String caminho, String novoNome) {
-        // Encontrando a posição do último caractere '\\'
+        // encontrando a posição do último caractere '\\'
         int ultimaBarraIndex = caminho.lastIndexOf('\\');
 
-        // Extraindo o diretório do caminho original
+        // extraindo o diretório do caminho original
         String diretorio = caminho.substring(0, ultimaBarraIndex + 1);
 
-        // Extraindo a extensão do arquivo
+        // extraindo a extensão do arquivo
         String extensao = caminho.substring(caminho.lastIndexOf('.'));
 
-        // Concatenando o novo nome do arquivo com a extensão original e o diretório
+        // concatenando o novo nome do arquivo com a extensão original e o diretório
         return diretorio + novoNome + extensao;
     }
 

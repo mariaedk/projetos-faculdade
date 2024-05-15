@@ -22,13 +22,13 @@ public class CifraAES {
             matriz = efetuarXor(bloco, roundKey.get(0));
 
             for (int rodada = 1; rodada < 10; rodada ++) {
-                //segunda etapa
+                // segunda etapa
                 matriz = subBytes(matriz);
-                //terceira etapa
+                // terceira etapa
                 matriz = shiftRows(matriz);
-                //quarta etapa
+                // quarta etapa
                 matriz = mixColumns(matriz);
-                //quinta etapa
+                // quinta etapa
                 matriz = efetuarXor(matriz, roundKey.get(rodada));
             }
 
@@ -143,13 +143,14 @@ public class CifraAES {
 
         int[][] newState = new int[4][4];
 
-        for (int linha = 0; linha < 4; linha++) {
-            for (int coluna = 0; coluna < 4; coluna++) {
+        for (int coluna = 0; coluna < 4; coluna++) {
+            for (int linha = 0; linha < 4; linha++) {
+                // para cada elemento
                 multiplicacaoGalois(matriz, linha, coluna, newState);
             }
         }
 
-        return matriz;
+        return newState;
     }
 
     private void multiplicacaoGalois(int[][] matriz, int linha, int coluna, int[][] newState) {
@@ -163,23 +164,28 @@ public class CifraAES {
         // linha pega na matriz de multiplicacao, coluna pega da matriz de estado
         int[] linhaMatrizMultiplicacao = MIX_COLUMN_MATRIX[linha];
         int[] colunaMatrizEstado = getColuna(matriz, coluna);
+        int[] resultadoMultiplicacaoElementos = new int[4];
 
         for (int i = 0; i < linhaMatrizMultiplicacao.length; i++) {
             // condições slide 28
             // Se um dos termos for 0, o resultado da multiplicação é 0
             if (linhaMatrizMultiplicacao[i] == 0 || colunaMatrizEstado[i] == 0) {
-                newState[linha][coluna] = 0;
+                resultadoMultiplicacaoElementos[i] = 0;
                 // Se um dos termos for 1, o resultado da multiplicação é igual ao outro termo
             } else if (linhaMatrizMultiplicacao[i] == 1) {
-                newState[linha][coluna] = colunaMatrizEstado[i];
+                resultadoMultiplicacaoElementos[i] = colunaMatrizEstado[i];
             } else if (colunaMatrizEstado[i] == 1) {
-                newState[linha][coluna] = linhaMatrizMultiplicacao[i];
+                resultadoMultiplicacaoElementos[i] = linhaMatrizMultiplicacao[i];
                 // Se os termos não forem 0 e nem 1, deve-se recorrer à tabela L e à tabela E
             } else {
-                int valorTabelaE = recorrerTabelas(linhaMatrizMultiplicacao, i, colunaMatrizEstado);
-                newState[linha][coluna] = valorTabelaE;
+                resultadoMultiplicacaoElementos[i] = recorrerTabelas(linhaMatrizMultiplicacao, i, colunaMatrizEstado);
             }
         }
+        int result = 0;
+        for (int i = 0; i < resultadoMultiplicacaoElementos.length; i++) {
+            result ^= resultadoMultiplicacaoElementos[i];
+        }
+        newState[linha][coluna] = result;
     }
 
     private static int recorrerTabelas(int[] linhaMatrizMultiplicacao, int i, int[] colunaMatrizEstado) {
