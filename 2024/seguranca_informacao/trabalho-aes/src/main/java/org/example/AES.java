@@ -133,10 +133,8 @@ public class AES {
             // cria o bloco em hexadecimal e adiciona na lista de blocos
             blocosHexDecimal.add(getBlocoArquivo(bytesBloco));
         }
-
         return blocosHexDecimal;
     }
-
     private int[][] getBlocoArquivo(byte[] bytesBloco) {
 
         if (bytesBloco == null || bytesBloco.length != 16) {

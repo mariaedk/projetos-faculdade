@@ -84,7 +84,7 @@ public class CifraAES {
 
         for (int coluna = 0; coluna < 4; coluna ++) {
             for (int linha = 0; linha < 4; linha ++) {
-                resultado[linha][coluna] = MATRIZES.getSboxValor(matriz[linha][coluna]);
+                resultado[linha][coluna] = Matrizes.getSboxValor(matriz[linha][coluna]);
             }
         }
 
@@ -189,15 +189,15 @@ public class CifraAES {
     }
 
     private static int recorrerTabelas(int[] linhaMatrizMultiplicacao, int i, int[] colunaMatrizEstado) {
-        int valorLinha = MATRIZES.getTabelaLValor(linhaMatrizMultiplicacao[i]);
-        int valorColuna = MATRIZES.getTabelaLValor(colunaMatrizEstado[i]);
+        int valorLinha = Matrizes.getTabelaLValor(linhaMatrizMultiplicacao[i]);
+        int valorColuna = Matrizes.getTabelaLValor(colunaMatrizEstado[i]);
         int soma = valorLinha + valorColuna;
 
         // se o resultado da soma ultrapassar 0𝑥FF, faz-se ajuste, subtraindo o valor de 0𝑥FF: 𝑟𝑒𝑠𝑢𝑙𝑡𝑎𝑑𝑜 - 0𝑥FF
         if (soma > 0xFF) {
             soma = soma - 0xFF;
         }
-        return MATRIZES.getTabelaEValor(soma);
+        return Matrizes.getTabelaEValor(soma);
     }
 
     private int[] getColuna(int[][] matrizEstado, int indexColuna) {
