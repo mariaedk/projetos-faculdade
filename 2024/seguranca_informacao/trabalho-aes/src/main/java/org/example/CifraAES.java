@@ -182,8 +182,8 @@ public class CifraAES {
             }
         }
         int result = 0;
-        for (int i = 0; i < resultadoMultiplicacaoElementos.length; i++) {
-            result ^= resultadoMultiplicacaoElementos[i];
+        for (int resultadoMultiplicacaoElemento : resultadoMultiplicacaoElementos) {
+            result ^= resultadoMultiplicacaoElemento;
         }
         newState[linha][coluna] = result;
     }

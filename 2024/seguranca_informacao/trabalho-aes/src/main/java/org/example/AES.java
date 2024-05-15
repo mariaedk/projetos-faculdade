@@ -12,11 +12,7 @@ public class AES {
 
     File arquivo;
 
-    public AES() {
-        iniciar();
-    }
-
-    private void iniciar() {
+    public void iniciar() {
         try {
             Scanner scn = new Scanner(System.in);
             Chaves chaves = new Chaves();
@@ -85,7 +81,31 @@ public class AES {
 
         return chave;
     }
+
     private List<int[][]> preencherPKCS7(byte[] bytesArquivo) {
+        int tamanhoBloco = 16;
+        //para o PKCS7
+        int tamanhoPreencher = tamanhoBloco - (bytesArquivo.length % tamanhoBloco);
+        byte[] arquivoPreenchido = Arrays.copyOf(bytesArquivo, bytesArquivo.length + tamanhoPreencher);
+        //para o bloco
+        List<int[][]> blocosHexDecimal = new ArrayList<>();
+
+        //preecher para ficar multiplo de 16 caso necessite
+        for (int i = bytesArquivo.length; i < arquivoPreenchido.length; i++) {
+            arquivoPreenchido[i] = (byte) tamanhoPreencher;
+        }
+
+        for (int i = 0; i < arquivoPreenchido.length; i += tamanhoBloco) {
+            //16 em 16 bytes
+            byte[] bytesBloco = Arrays.copyOfRange(arquivoPreenchido, i, i + tamanhoBloco);
+            //cria o bloco em hexadecimal e adiciona na lista de blocos
+            blocosHexDecimal.add(getBlocoArquivo(bytesBloco));
+        }
+
+        return blocosHexDecimal;
+    }
+
+    private List<int[][]> preencherPKCS7ComLimitador(byte[] bytesArquivo) {
         int tamanhoBloco = 16;
         // para o PKCS7
         int tamanhoPreencher = 0;
@@ -141,12 +161,20 @@ public class AES {
         }
 
         String nomeArquivo = getTextoUsuario(scn, "Nome do arquivo a ser gerado: ", "Nome inválido\n");
-        File arqCript = new File(alterarNomeArquivo(arquivo.getPath(), nomeArquivo));
+        gravarArquivo(nomeArquivo, "dec", "decimal", blocosCriptografados);
+        gravarArquivo(nomeArquivo, "hex", "hexadecimal", blocosCriptografados);
+        gravarArquivo(nomeArquivo, "bin", "binario", blocosCriptografados);
+
+        System.out.println("Arquivo criptografado com sucesso!");
+    }
+
+    private void gravarArquivo(String nomeArquivo, String extensao, String tipoDadoGravar, List<int[][]> blocosCriptografados) throws IOException {
+        File arqCript = new File(alterarNomeArquivo(arquivo.getPath(), nomeArquivo, extensao));
         boolean condicao = arqCript.exists();
         int index = 1;
 
         while (condicao) {
-            arqCript = new File(alterarNomeArquivo(arquivo.getPath(), String.format("%s(%d)", nomeArquivo, index++)));
+            arqCript = new File(alterarNomeArquivo(arquivo.getPath(), String.format("%s(%d)", nomeArquivo, index++), extensao));
             condicao = arqCript.exists();
         }
 
@@ -155,35 +183,53 @@ public class AES {
         for (int[][] blocoCript : blocosCriptografados) {
             for (int coluna = 0; coluna < 4; coluna ++) {
                 for (int linha = 0; linha < 4; linha ++) {
-                    String hex = Integer.toHexString(blocoCript[linha][coluna]);
-                    fos.write(hex.getBytes());
+                    fos.write(validaTipoDadoGravar(tipoDadoGravar, blocoCript[linha][coluna]));
                 }
             }
         }
 
         fos.close();
+        System.out.printf("Arquivo %s gerado com sucesso!\n", arqCript.getName());
+    }
 
-        System.out.println("Arquivo criptografado com sucesso!");
+    private byte[] validaTipoDadoGravar(String tipo, int decimal) {
+        byte[] retorno = null;
+
+        switch (tipo.toLowerCase()) {
+            case "decimal":
+                retorno = Integer.toString(decimal).getBytes();
+                break;
+
+            case "hexadecimal":
+                retorno = Integer.toHexString(decimal).getBytes();
+                break;
+
+            case "binario":
+                retorno = Integer.toBinaryString(decimal).getBytes();
+                break;
+
+            default:
+                break;
+        }
+
+        return retorno;
     }
 
     /**
      * Método para alterar o nome do arquivo em um caminho, mantendo a extensão original
      */
-    private String alterarNomeArquivo(String caminho, String novoNome) {
+    private String alterarNomeArquivo(String caminho, String novoNome, String extensao) {
         // encontrando a posição do último caractere '\\'
         int ultimaBarraIndex = caminho.lastIndexOf('\\');
 
         // extraindo o diretório do caminho original
         String diretorio = caminho.substring(0, ultimaBarraIndex + 1);
 
-        // extraindo a extensão do arquivo
-        String extensao = caminho.substring(caminho.lastIndexOf('.'));
-
         // concatenando o novo nome do arquivo com a extensão original e o diretório
-        return diretorio + novoNome + extensao;
+        return String.format("%s%s.%s", diretorio, novoNome, extensao);
     }
 
     public static void main(String[] args) {
-        new AES();
+        new AES().iniciar();
     }
 }
