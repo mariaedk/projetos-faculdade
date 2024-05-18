@@ -8,8 +8,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Algoritmo AES para criptografar arquivos .txt ou .bin
+ *
+ * @author Luan Lavandoski Guarnieri
+ * @author Maria Eduarda Krutzsch
+ */
 public class AES {
-
     File arquivo;
 
     public void iniciar() {
