@@ -1,8 +1,9 @@
 package org.example;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,12 +24,12 @@ public class AES {
             Chaves chaves = new Chaves();
             CifraAES cifra = new CifraAES();
 
-            final String conteudo = getArquivo();
+            final byte[] conteudo = getArquivo();
             // exemplo chave slide -> 65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80
             final String chave = getTextoUsuario(scn, "Chave da criptografia: ", "Chave inválida!\n");
 
             List<int[][]> roundKeys = chaves.getRoundKeys(chave);
-            List<int[][]> listaBlocos = preencherPKCS7(conteudo.getBytes());
+            List<int[][]> listaBlocos = preencherPKCS7(conteudo);
             List<int[][]> blocosCifrados = cifra.cifrarArquivo(listaBlocos, roundKeys);
 
             montarArquivoEncriptografado(scn, blocosCifrados);
@@ -39,13 +40,14 @@ public class AES {
         }
     }
 
-    private String getArquivo() throws IllegalArgumentException, IOException {
+    private byte[] getArquivo() throws IllegalArgumentException, IOException {
         // caminho para arquivo teste - C:/Users/maria/OneDrive/Documentos/TESTE.txt
         StringBuilder conteudo = new StringBuilder();
         JFileChooser jfc = new JFileChooser();
+        FileInputStream fis = null;
 
         // filtro para somente arquivos .txt e .bin
-        jfc.setFileFilter(new FileNameExtensionFilter("Arquivo para criptografar", "txt", "bin"));
+        // jfc.setFileFilter(new FileNameExtensionFilter("Arquivo para criptografar", "txt", "bin"));
 
         if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             arquivo = jfc.getSelectedFile();
@@ -56,15 +58,31 @@ public class AES {
             throw new IllegalArgumentException(String.format("%s - %d", "Falha ao ler arquivo selecionado", 1000L));
         }
 
-        // le o arquivo selecionado
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(arquivo))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                conteudo.append(line);
-            }
-        }
-
-        return conteudo.toString();
+        Path path = Path.of(arquivo.getPath());
+        return Files.readAllBytes(path);
+//        // le o arquivo selecionado
+//        try {
+//            fis = new FileInputStream(arquivo);
+//            byte[] buffer = new byte[1024]; // Buffer de 1 KB
+//            int bytesRead;
+//
+//            // ler todo o arquivo em um vetor unico e retorna o vetor
+//            // classe files -> read all bytes
+//            while ((bytesRead = fis.read(buffer)) != -1) {
+//                return new String(buffer, 0, bytesRead));
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            if (fis != null) {
+//                try {
+//                    fis.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        return conteudo.toString();
     }
 
     private String getTextoUsuario(Scanner scn, String msg, String msgErro) {
@@ -91,7 +109,8 @@ public class AES {
         int tamanhoBloco = 16;
         //para o PKCS7
         int tamanhoPreencher = tamanhoBloco - (bytesArquivo.length % tamanhoBloco);
-        byte[] arquivoPreenchido = Arrays.copyOf(bytesArquivo, bytesArquivo.length + tamanhoPreencher);
+
+        byte[] arquivoPreenchido = Arrays.copyOf(bytesArquivo, bytesArquivo.length + (tamanhoPreencher == 0 ? tamanhoBloco : tamanhoPreencher) );
         //para o bloco
         List<int[][]> blocosHexDecimal = new ArrayList<>();
 
@@ -164,20 +183,18 @@ public class AES {
         }
 
         String nomeArquivo = getTextoUsuario(scn, "Nome do arquivo a ser gerado: ", "Nome inválido\n");
-        gravarArquivo(nomeArquivo, "dec", "decimal", blocosCriptografados);
-        gravarArquivo(nomeArquivo, "hex", "hexadecimal", blocosCriptografados);
-        gravarArquivo(nomeArquivo, "bin", "binario", blocosCriptografados);
+        gravarArquivo(nomeArquivo, blocosCriptografados);
 
         System.out.println("Arquivo criptografado com sucesso!");
     }
 
-    private void gravarArquivo(String nomeArquivo, String extensao, String tipoDadoGravar, List<int[][]> blocosCriptografados) throws IOException {
-        File arqCript = new File(alterarNomeArquivo(arquivo.getPath(), nomeArquivo, extensao));
+    private void gravarArquivo(String nomeArquivo, List<int[][]> blocosCriptografados) throws IOException {
+        File arqCript = new File(alterarNomeArquivo(arquivo.getPath(), nomeArquivo, "aes"));
         boolean condicao = arqCript.exists();
         int index = 1;
 
         while (condicao) {
-            arqCript = new File(alterarNomeArquivo(arquivo.getPath(), String.format("%s(%d)", nomeArquivo, index++), extensao));
+            arqCript = new File(alterarNomeArquivo(arquivo.getPath(), String.format("%s(%d)", nomeArquivo, index++), "aes"));
             condicao = arqCript.exists();
         }
 
@@ -186,36 +203,13 @@ public class AES {
         for (int[][] blocoCript : blocosCriptografados) {
             for (int coluna = 0; coluna < 4; coluna ++) {
                 for (int linha = 0; linha < 4; linha ++) {
-                    fos.write(validaTipoDadoGravar(tipoDadoGravar, blocoCript[linha][coluna]));
+                    fos.write(blocoCript[linha][coluna]);
                 }
             }
         }
 
         fos.close();
         System.out.printf("Arquivo %s gerado com sucesso!\n", arqCript.getName());
-    }
-
-    private byte[] validaTipoDadoGravar(String tipo, int decimal) {
-        byte[] retorno = null;
-
-        switch (tipo.toLowerCase()) {
-            case "decimal":
-                retorno = Integer.toString(decimal).getBytes();
-                break;
-
-            case "hexadecimal":
-                retorno = Integer.toHexString(decimal).getBytes();
-                break;
-
-            case "binario":
-                retorno = Integer.toBinaryString(decimal).getBytes();
-                break;
-
-            default:
-                break;
-        }
-
-        return retorno;
     }
 
     /**
