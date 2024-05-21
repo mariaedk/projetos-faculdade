@@ -100,36 +100,6 @@ public class AES {
         return blocosHexDecimal;
     }
 
-    private List<int[][]> preencherPKCS7ComLimitador(byte[] bytesArquivo) {
-        int tamanhoBloco = 16;
-        // para o PKCS7
-        int tamanhoPreencher = 0;
-        int diferenca = tamanhoBloco - (bytesArquivo.length % tamanhoBloco);
-
-        if(bytesArquivo.length < 16) {
-            tamanhoPreencher = diferenca;
-        }
-        else if(bytesArquivo.length > 16) {
-            tamanhoPreencher = (bytesArquivo.length % tamanhoBloco) == 0 ? 0 : diferenca;
-        }
-
-        byte[] arquivoPreenchido = Arrays.copyOf(bytesArquivo, bytesArquivo.length + tamanhoPreencher);
-        // para o bloco
-        List<int[][]> blocosHexDecimal = new ArrayList<>();
-
-        // preecher para ficar multiplo de 16 caso necessite
-        for (int i = bytesArquivo.length; i < arquivoPreenchido.length; i++) {
-            arquivoPreenchido[i] = (byte) tamanhoPreencher;
-        }
-
-        for (int i = 0; i < arquivoPreenchido.length; i += tamanhoBloco) {
-            // 16 em 16 bytes
-            byte[] bytesBloco = Arrays.copyOfRange(arquivoPreenchido, i, i + tamanhoBloco);
-            // cria o bloco em hexadecimal e adiciona na lista de blocos
-            blocosHexDecimal.add(getBlocoArquivo(bytesBloco));
-        }
-        return blocosHexDecimal;
-    }
     private int[][] getBlocoArquivo(byte[] bytesBloco) {
 
         if (bytesBloco == null || bytesBloco.length != 16) {
@@ -160,12 +130,12 @@ public class AES {
     }
 
     private void gravarArquivo(String nomeArquivo, List<int[][]> blocosCriptografados) throws IOException {
-        File arqCript = new File(alterarNomeArquivo(arquivo.getPath(), nomeArquivo, "aes"));
+        File arqCript = new File(alterarNomeArquivo(arquivo.getPath(), nomeArquivo));
         boolean condicao = arqCript.exists();
         int index = 1;
 
         while (condicao) {
-            arqCript = new File(alterarNomeArquivo(arquivo.getPath(), String.format("%s(%d)", nomeArquivo, index++), "aes"));
+            arqCript = new File(alterarNomeArquivo(arquivo.getPath(), String.format("%s(%d)", nomeArquivo, index++)));
             condicao = arqCript.exists();
         }
 
@@ -186,7 +156,7 @@ public class AES {
     /**
      * Método para alterar o nome do arquivo em um caminho, mantendo a extensão original
      */
-    private String alterarNomeArquivo(String caminho, String novoNome, String extensao) {
+    private String alterarNomeArquivo(String caminho, String novoNome) {
         // encontrando a posição do último caractere '\\'
         int ultimaBarraIndex = caminho.lastIndexOf('\\');
 
@@ -194,7 +164,7 @@ public class AES {
         String diretorio = caminho.substring(0, ultimaBarraIndex + 1);
 
         // concatenando o novo nome do arquivo com a extensão original e o diretório
-        return String.format("%s%s.%s", diretorio, novoNome, extensao);
+        return String.format("%s%s.%s", diretorio, novoNome, "aes");
     }
 
     public static void main(String[] args) {
