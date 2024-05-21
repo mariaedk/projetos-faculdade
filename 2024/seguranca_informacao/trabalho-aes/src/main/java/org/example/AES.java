@@ -41,13 +41,7 @@ public class AES {
     }
 
     private byte[] getArquivo() throws IllegalArgumentException, IOException {
-        // caminho para arquivo teste - C:/Users/maria/OneDrive/Documentos/TESTE.txt
-        StringBuilder conteudo = new StringBuilder();
         JFileChooser jfc = new JFileChooser();
-        FileInputStream fis = null;
-
-        // filtro para somente arquivos .txt e .bin
-        // jfc.setFileFilter(new FileNameExtensionFilter("Arquivo para criptografar", "txt", "bin"));
 
         if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             arquivo = jfc.getSelectedFile();
@@ -60,29 +54,6 @@ public class AES {
 
         Path path = Path.of(arquivo.getPath());
         return Files.readAllBytes(path);
-//        // le o arquivo selecionado
-//        try {
-//            fis = new FileInputStream(arquivo);
-//            byte[] buffer = new byte[1024]; // Buffer de 1 KB
-//            int bytesRead;
-//
-//            // ler todo o arquivo em um vetor unico e retorna o vetor
-//            // classe files -> read all bytes
-//            while ((bytesRead = fis.read(buffer)) != -1) {
-//                return new String(buffer, 0, bytesRead));
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (fis != null) {
-//                try {
-//                    fis.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        return conteudo.toString();
     }
 
     private String getTextoUsuario(Scanner scn, String msg, String msgErro) {

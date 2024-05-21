@@ -48,28 +48,29 @@ public class CryptoJava {
             Scanner scanner = new Scanner(System.in);
 
             // Solicita o caminho do arquivo a ser criptografado
-            //System.out.print("Digite o caminho do arquivo a ser criptografado: ");
-            //String inputFilePath = scanner.nextLine();
+            // System.out.print("Digite o caminho do arquivo a ser criptografado: ");
+            // String inputFilePath = scanner.nextLine();
 
             // Define o caminho para o arquivo criptografado
-            //String encryptedFilePath = inputFilePath + ".encrypted";
-
-            // Define o caminho para o arquivo descriptografado
-            String decryptedFilePath = "C:/Users/maria/OneDrive/Documentos/GERADO-AUTO" + ".decrypted";
+            // String encryptedFilePath = inputFilePath + ".encrypted";
 
             // Chave AES
             byte[] keyBytes = {65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80};
             SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
             // Criptografa o arquivo
-            //encryptFile(inputFilePath, encryptedFilePath, secretKey);
+            // encryptFile(inputFilePath, encryptedFilePath, secretKey);
 
             // Solicita o caminho do arquivo a ser descriptografado
-            System.out.print("Digite o caminho do arquivo a ser descriptografar: ");
-            String descriptar = scanner.nextLine();
+            System.out.print("Digite o caminho do arquivo a descriptografar: ");
+            String decrypt = scanner.nextLine();
+
+            // Define o caminho para o arquivo descriptografado
+            // Utilizar o seu caminho
+            String decryptedFilePath = decrypt + ".decrypted";
 
             // Descriptografa o arquivo criptografado
-            decryptFile(descriptar, decryptedFilePath, secretKey);
+            decryptFile(decrypt, decryptedFilePath, secretKey);
         } catch (Exception e) {
             e.printStackTrace();
         }
