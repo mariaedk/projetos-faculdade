@@ -27,7 +27,7 @@ filtro_sobel_vertical = cv2.Sobel(imagegray, cv2.CV_64F, 0, 1, ksize=3)
 filtro_sobel_vertical = np.uint8(np.absolute(filtro_sobel_vertical))
 
 # filtro laplaciano
-filtro_laplaciano = cv2.Laplacian(imagegray, cv2.CV_64F)
+filtro_laplaciano = cv2.Laplacian(filtro_media, cv2.CV_64F)
 filtro_laplaciano = np.uint8(np.absolute(filtro_laplaciano))
 
 plt.figure(figsize=(8, 8))
@@ -51,3 +51,5 @@ plt.subplot(2, 2, 4)
 plt.imshow(image_rgb)
 plt.title('Imagem original')
 plt.axis('off')
+
+plt.waitforbuttonpress()
