@@ -1,3 +1,6 @@
+"""
+Alunos: Luan Lavandoski Guarnieri, Maria Eduarda Krutzsch
+"""
 import cv2
 
 cascade_src = 'cars.xml'

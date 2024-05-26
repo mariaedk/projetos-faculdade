@@ -1,4 +1,6 @@
-'''
+"""
+Alunos: Luan Lavandoski Guarnieri, Maria Eduarda Krutzsch
+
 O algoritmo de Feitosa [7], também usado neste
 trabalho, utiliza o acompanhamento da região de
 movimentação do veículo.
@@ -12,7 +14,7 @@ Estas imagens são somadas, formando assim uma região de interesse.
 Logo que esta região de interesse é formada os objetos dentro desta região são segmentados,
 utilizando o filtro de detecção de bordas.
 Em seguida, ocorre a localização dos veículos e a contagem a partir da apresentação do número de objetos segmentados.
-'''
+"""
 import cv2
 import numpy as np
 

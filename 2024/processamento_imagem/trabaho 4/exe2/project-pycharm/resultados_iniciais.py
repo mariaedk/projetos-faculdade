@@ -1,3 +1,6 @@
+"""
+Alunos: Luan Lavandoski Guarnieri, Maria Eduarda Krutzsch
+"""
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt

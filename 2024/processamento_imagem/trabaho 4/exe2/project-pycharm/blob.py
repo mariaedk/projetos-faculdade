@@ -1,39 +1,68 @@
+"""
+Alunos: Luan Lavandoski Guarnieri, Maria Eduarda Krutzsch
+"""
 import cv2
+import numpy as np
 
-cascade_src = 'cars.xml'
-video_src = 'cars.avi'
+video = 'cars.avi'
 
-cap = cv2.VideoCapture(video_src)
-car_cascade = cv2.CascadeClassifier(cascade_src)
+def detectar_blob(imagem, subtrator_fundo, area_minima=100):
+    # Aplicando subtração de fundo
+    mascara_fg = subtrator_fundo.apply(imagem)
+    
+    # Aplicando uma operação de abertura para remover ruídos
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    mascara_fg = cv2.morphologyEx(mascara_fg, cv2.MORPH_OPEN, kernel)
+    
+    # Encontrando os contornos na máscara de foreground
+    contornos, _ = cv2.findContours(mascara_fg, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    
+    # Inicializando a lista de blobs
+    blobs = []
+    
+    # Loop sobre todos os contornos encontrados
+    for contorno in contornos:
+        # Calculando a área do contorno
+        area = cv2.contourArea(contorno)
+        
+        # Se a área for muito pequena, provavelmente não é um veículo, então ignoramos
+        if area < area_minima:
+            continue
+        
+        # Calculando o menor círculo envolvente para o contorno
+        (x, y), raio = cv2.minEnclosingCircle(contorno)
+        centro = (int(x), int(y))
+        raio = int(raio)
+        
+        # Adicionando o centro e a área do blob à lista de blobs
+        blobs.append((centro, raio, area))
+        
+        # Desenhando um círculo ao redor do blob
+        cv2.circle(imagem, centro, raio, (0, 255, 0), 2)
+    
+    # Retornando a lista de blobs e a imagem com os blobs desenhados
+    return blobs, imagem
 
-ret, prev_frame = cap.read()
-prev_gray = cv2.cvtColor(prev_frame, cv2.COLOR_BGR2GRAY)
+# Carregando o vídeo
+cap = cv2.VideoCapture(video)
+
+# Inicializando o modelo de subtração de fundo
+subtrator_fundo = cv2.createBackgroundSubtractorMOG2()
 
 while cap.isOpened():
     ret, frame = cap.read()
-    if type(frame) == type(None):
+    if not ret:
+        break
+    
+    # Detectando blobs no frame atual
+    blobs, frame_resultado = detectar_blob(frame, subtrator_fundo)
+    
+    # Exibindo o resultado
+    cv2.imshow('Detecção de Blob', frame_resultado)
+    
+    # Ajuste a velocidade
+    if cv2.waitKey(50) == 27: 
         break
 
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-    diff = cv2.absdiff(gray, prev_gray)
-
-    blurred = cv2.blur(diff, (5, 5))
-    _, thresh = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-
-    blurred2 = cv2.blur(thresh, (5, 5))
-    _, final_thresh = cv2.threshold(blurred2, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-
-    cars = car_cascade.detectMultiScale(final_thresh, 1.1, 2)
-
-    for (x, y, w, h) in cars:
-        cv2.circle(frame, (x + w // 2, y + h // 2), int((w + h) / 4), (0, 255, 0), 2)
-
-    cv2.imshow('video', frame)
-
-    if cv2.waitKey(33) == 27:
-        break
-
-    prev_gray = gray.copy()
-
+cap.release()
 cv2.destroyAllWindows()
