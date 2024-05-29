@@ -1,3 +1,6 @@
+"""
+Alunos: Luan Lavandoski Guarnieri, Maria Eduarda Krutzsch
+"""
 import cv2
 
 cascade_src = 'cars.xml'
@@ -25,7 +28,7 @@ while cap.isOpened():
 
     # necessária a aplicação de outro filtro de média e de threshold sobre a imagem.
     blurred2 = cv2.blur(thresh, (3, 3))
-    _, final_thresh = cv2.threshold(blurred2, 40, 255, cv2.THRESH_BINARY)
+    _, final_thresh = cv2.threshold(blurred2, 60, 255, cv2.THRESH_BINARY)
 
     cv2.imshow('video', final_thresh)
 
