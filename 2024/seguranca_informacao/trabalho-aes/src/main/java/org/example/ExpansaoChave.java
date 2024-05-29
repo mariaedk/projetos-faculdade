@@ -33,6 +33,7 @@ public abstract class ExpansaoChave {
         int[] roundConstants = new int[Chaves.TAMANHO_COLUNAS_LINHAS];
         int roundKeyByte = this.roundConstantMatriz[roundKeyNumero];
         roundConstants[0] = roundKeyByte;
+
         return roundConstants;
     }
 

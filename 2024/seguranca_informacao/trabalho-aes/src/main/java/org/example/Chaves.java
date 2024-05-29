@@ -46,11 +46,17 @@ public class Chaves extends ExpansaoChave {
         int[] primeiraPalavraRoundKey;
         int ultimaColuna = matrizEstado.length - 1;
 
+        //rotaciona
         primeiraPalavraRoundKey = rotWord(getColuna(matrizEstado, ultimaColuna));
+        //substitui de acordo com o SBOX
         primeiraPalavraRoundKey = subWord(primeiraPalavraRoundKey);
+        //array somente com a pos 0 com valor, de acordo com a rodada
         int[] roundConstant = roundConstant(roundKeyNumero);
+        //xor do vetor acima com o o substituido do SBOX0
         primeiraPalavraRoundKey = xor(primeiraPalavraRoundKey, roundConstant);
+        //xor do vetor acima com o ultima coluna
         primeiraPalavraRoundKey = xor(primeiraPalavraRoundKey, getColuna(matrizEstado, 0));
+
         return primeiraPalavraRoundKey;
     }
 
@@ -70,6 +76,7 @@ public class Chaves extends ExpansaoChave {
         return matriz;
     }
 
+    //apenas coloca a palavra em matrix 4x4
     private int[][] getMatrizEstado(String chave) {
         if (chave == null) {
             throw new IllegalArgumentException(String.format("%s - %d", "chave inválida", 9999L));

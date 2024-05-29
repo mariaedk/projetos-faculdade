@@ -119,7 +119,7 @@ public class AES {
     }
 
     private void montarArquivoEncriptografado(Scanner scn, List<int[][]> blocosCriptografados) throws IOException {
-        if(blocosCriptografados == null || blocosCriptografados.isEmpty()) {
+        if (blocosCriptografados == null || blocosCriptografados.isEmpty()) {
             throw new IllegalArgumentException(String.format("%s - %d", "Não existe bloco criptografado", 9998L));
         }
 

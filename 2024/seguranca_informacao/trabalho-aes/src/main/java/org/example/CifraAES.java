@@ -171,12 +171,16 @@ public class CifraAES {
             // Se um dos termos for 0, o resultado da multiplicação é 0
             if (linhaMatrizMultiplicacao[i] == 0 || colunaMatrizEstado[i] == 0) {
                 resultadoMultiplicacaoElementos[i] = 0;
-                // Se um dos termos for 1, o resultado da multiplicação é igual ao outro termo
+
+            // Se um dos termos for 1, o resultado da multiplicação é igual ao outro termo
             } else if (linhaMatrizMultiplicacao[i] == 1) {
                 resultadoMultiplicacaoElementos[i] = colunaMatrizEstado[i];
+
+            // se o valor da coluna da matriz de estado == 1
             } else if (colunaMatrizEstado[i] == 1) {
                 resultadoMultiplicacaoElementos[i] = linhaMatrizMultiplicacao[i];
-                // Se os termos não forem 0 e nem 1, deve-se recorrer à tabela L e à tabela E
+
+            // Se os termos não forem 0 e nem 1, deve-se recorrer à tabela L e à tabela E
             } else {
                 resultadoMultiplicacaoElementos[i] = recorrerTabelas(linhaMatrizMultiplicacao, i, colunaMatrizEstado);
             }
@@ -193,7 +197,7 @@ public class CifraAES {
         int valorColuna = Matrizes.getTabelaLValor(colunaMatrizEstado[i]);
         int soma = valorLinha + valorColuna;
 
-        // se o resultado da soma ultrapassar 0𝑥FF, faz-se ajuste, subtraindo o valor de 0𝑥FF: 𝑟𝑒𝑠𝑢𝑙𝑡𝑎𝑑𝑜 - 0𝑥FF
+        // se o resultado da soma ultrapassar 0𝑥FF, faz-se ajuste, subtraindo o valor de 0𝑥FF: 𝑟𝑒𝑠𝑢𝑙𝑡𝑎𝑑𝑜 - 0𝑥FF - em decimal seria 255
         if (soma > 0xFF) {
             soma = soma - 0xFF;
         }

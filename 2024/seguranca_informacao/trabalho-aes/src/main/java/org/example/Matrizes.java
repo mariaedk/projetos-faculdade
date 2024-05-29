@@ -88,7 +88,6 @@ public class Matrizes {
          * Agora, se fizermos >> 4, estamos deslocando esses 4 bits mais significativos para a direita, deixando-os na posição dos bits menos significativos.
          * O resultado é 0000 1010, que em decimal é 10. Esse é o valor que usamos para determinar a linha na S-Box.
          */
-
         int linha = (decimal & 0xF0) >> 4;
         // 0x0F -> máscara que isola os bits menos significativos, faz um AND pra pegar só eles
         int coluna = decimal & 0x0F;
