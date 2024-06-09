@@ -104,7 +104,7 @@ print("regra com maior confiança: \n")
 print(maior_confianca)
 
 '''
-Resposta: a regra com maior confianã é a de "tomatoes", "olive oil" e "spaghetti", com uma confiança de 61.11%.
+Resposta: a regra com maior confiança é a de "tomatoes", "olive oil" e "spaghetti".
 
 Regra: Se "tomatoes" e "olive oil" (A) são comprados, então spaghetti (B) também é comprado.
 Confiança: 0.611111 (61.11%)
