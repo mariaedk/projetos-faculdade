@@ -1,6 +1,8 @@
 import pandas as pd
 from apyori import apriori
 
+# alunos: maria eduarda krutzsch, luan guarnieri, kaue reblin, arthur pinotti
+
 '''
     Questão 1
 '''
@@ -36,7 +38,6 @@ transacoes_mercado2 = []
 for i in range(len(base_mercado2)):
     transacoes_mercado2.append([str(base_mercado2.values[i, j]) for j in range(base_mercado2.shape[1])])
 
-
 '''
 a) Vamos supor que você quer extrair Regras da Associação para os produtos que são vendidos pelo menos quatro vezes ao 
 dia, ou seja, 28 vezes por semana (4*7). Adicione o valor de suporte de acordo com o problema.
@@ -49,14 +50,14 @@ Execute o algoritmo e responda qual é o resultado.
 min_vendas_semanais = 28
 total_transacoes = len(base_mercado2)
 min_support = min_vendas_semanais / total_transacoes
-print("Suporte mínimo:", min_support)
+print("suporte mínimo:", min_support)
 
 '''
 b) Adicione o valor de confiança para 0.2 e o lift para 3. Quantos registros foram retornados?
 '''
 regras_mercado2 = apriori(transacoes_mercado2, min_support=min_support, min_confidence=0.2, min_lift=3)
 resultados_mercado2 = list(regras_mercado2)
-print(f"Quantidade de regras encontradas: {len(resultados_mercado2)}")
+print(f"quantidade de registros retornados: {len(resultados_mercado2)}")
 
 '''
 c) Adicione o código abaixo para poder visualizar melhor os dados. Faça comentário do que acontece em cada linha do código
@@ -84,12 +85,12 @@ for resultado in resultados_mercado2:
 rules_df = pd.DataFrame({'A': A, 'B': B, 'suporte': suporte, 'confianca': confianca, 'lift': lift})
 
 rules_df_sorted_by_lift = rules_df.sort_values(by='lift', ascending=False)
-print("Regras ordenadas por lift:")
+print("regras ordenadas por lift:")
 print(rules_df_sorted_by_lift)
 
 print('\n')
 rules_df_sorted_by_confidence = rules_df.sort_values(by='confianca', ascending=False)
-print("Regras ordenadas por confiança:")
+print("regras ordenadas por confiança:")
 print(rules_df_sorted_by_confidence)
 
 '''
@@ -99,7 +100,7 @@ Qual o valor da regra com maior confiança?
 
 print('\n')
 maior_confianca = rules_df_sorted_by_confidence.iloc[0]
-print("Regra com maior confiança: \n")
+print("regra com maior confiança: \n")
 print(maior_confianca)
 
 '''
